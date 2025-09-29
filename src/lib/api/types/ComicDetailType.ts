@@ -1,5 +1,5 @@
-import { parseChapterItemFromJson, type ChapterItemType } from './ChapterItemType';
-import { parseGenreItemFromJson, type GenreItemType } from './GenreItemType';
+import { type ChapterItemType } from './ChapterItemType';
+import { type GenreItemType } from './GenreItemType';
 
 export type ComicDetailType = {
 	title: string;

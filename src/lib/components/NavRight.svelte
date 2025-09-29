@@ -4,8 +4,14 @@
 	import { faBookmark, faHistory, faSearch, faMobile } from '@fortawesome/free-solid-svg-icons';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { SourceType } from '$lib/config/sourceType';
+	// 1. Impor ikon Menu dan X dari lucide-svelte
+	import { Menu, X } from '@lucide/svelte';
 
-	let selected: SourceType = SourceType.V3;
+	let { isOpen = false, selected = SourceType.V3 } = $props<{
+		isOpen?: boolean;
+		selected?: SourceType;
+	}>();
+
 	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
 	onDestroy(() => unsubscribe());
 
@@ -20,10 +26,24 @@
 		{ value: SourceType.V4, label: 'Dark (v4)' },
 		{ value: SourceType.V5, label: 'Manhwa (v5)' }
 	];
+
+	// Aksi untuk mendeteksi klik di luar elemen
+	function clickOutside(node: HTMLElement) {
+		const handleClick = (event: MouseEvent) => {
+			if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
+				node.dispatchEvent(new CustomEvent('click_outside'));
+			}
+		};
+		document.addEventListener('click', handleClick, true);
+		return {
+			destroy() {
+				document.removeEventListener('click', handleClick, true);
+			}
+		};
+	}
 </script>
 
 <div class="flex items-center gap-3">
-	<!-- Search: fleksibel, tumbuh untuk mengambil ruang yang tersedia di header -->
 	<form
 		action="/cari"
 		method="get"
@@ -42,60 +62,83 @@
 		/>
 	</form>
 
-	<!-- aksi kanan: bookmark/history hanya di desktop (lg), download tersedia di semua layar -->
-	<div class="flex items-center gap-2">
-		<!-- bookmark & history hanya tampil di desktop -->
+	<div class="flex items-center">
 		<button
-			aria-label="Bookmark"
-			title="Bookmark"
-			class="group hidden cursor-pointer rounded p-2 hover:bg-primary lg:inline-flex"
+			onclick={() => (isOpen = !isOpen)}
+			aria-label="Buka menu"
+			aria-expanded={isOpen}
+			class="relative z-20 p-2 lg:hidden"
 		>
-			<Fa
-				icon={faBookmark}
-				class="text-white group-hover:text-black"
-				style="width:1.25rem;height:1.25rem;"
-			/>
+			{#if isOpen}
+				<X class="h-6 w-6 text-white" />
+			{:else}
+				<Menu class="h-6 w-6 text-white" />
+			{/if}
 		</button>
 
-		<button
-			aria-label="History"
-			title="History"
-			class="group hidden cursor-pointer rounded p-2 hover:bg-primary lg:inline-flex"
+		<div
+			use:clickOutside
+			class="
+        {isOpen ? 'flex' : 'hidden'}
+        absolute
+        top-16 right-4
+        z-10 w-56
+        flex-col gap-2
+        rounded-lg bg-[#2a2a2a] p-4 shadow-lg lg:relative lg:top-auto lg:right-auto lg:flex
+        lg:w-auto lg:flex-row lg:items-center lg:gap-2 lg:bg-transparent lg:p-0 lg:shadow-none
+      "
 		>
-			<Fa
-				icon={faHistory}
-				class="text-white group-hover:text-black"
-				style="width:1.25rem;height:1.25rem;"
-			/>
-		</button>
-
-		<label for="source-select" class="sr-only">Pilih sumber</label>
-		<select
-			id="source-select"
-			bind:value={selected}
-			on:change={onSourceChange}
-			class="rounded-md border border-gray-600 bg-[#1E1E1E] px-2 py-1 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none"
-			aria-label="Pilih sumber"
-		>
-			{#each sourceOptions as opt (opt.value)}
-				<option value={opt.value}>{opt.label}</option>
-			{/each}
-		</select>
-
-		<!-- Download: tampil di semua device. teks muncul mulai sm/md -->
-		<button
-			aria-label="Download"
-			title="Download"
-			class="group flex cursor-pointer items-center gap-2 rounded-md border-2 border-primary bg-transparent p-2 transition-colors hover:bg-primary focus:ring-2 focus:outline-none"
-		>
-			<Fa
-				icon={faMobile}
-				class="text-white transition-colors group-hover:text-black"
-				style="width:1.25rem;height:1.25rem;"
-			/>
-			<span class="hidden font-medium text-white transition-colors group-hover:text-black sm:inline"
-				>Download</span
+			<button
+				aria-label="Bookmark"
+				title="Bookmark"
+				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
 			>
-		</button>
+				<Fa
+					icon={faBookmark}
+					class="text-white group-hover:text-black"
+					style="width:1.25rem;height:1.25rem;"
+				/>
+				<span class="text-white lg:hidden">Bookmark</span>
+			</button>
+
+			<button
+				aria-label="History"
+				title="History"
+				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
+			>
+				<Fa
+					icon={faHistory}
+					class="text-white group-hover:text-black"
+					style="width:1.25rem;height:1.25rem;"
+				/>
+				<span class="text-white lg:hidden">History</span>
+			</button>
+
+			<select
+				id="source-select"
+				bind:value={selected}
+				onchange={onSourceChange}
+				class="w-full rounded-md border border-gray-600 bg-[#1E1E1E] px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
+				aria-label="Pilih sumber"
+			>
+				{#each sourceOptions as opt (opt.value)}
+					<option value={opt.value}>{opt.label}</option>
+				{/each}
+			</select>
+
+			<button
+				aria-label="Download"
+				title="Download"
+				class="group flex w-full cursor-pointer items-center gap-2 rounded-md border-2 border-primary bg-transparent p-2 transition-colors hover:bg-primary focus:ring-2 focus:outline-none"
+			>
+				<Fa
+					icon={faMobile}
+					class="text-white transition-colors group-hover:text-black"
+					style="width:1.25rem;height:1.25rem;"
+				/>
+				<span class="font-medium text-white transition-colors group-hover:text-black">Download</span
+				>
+			</button>
+		</div>
 	</div>
 </div>

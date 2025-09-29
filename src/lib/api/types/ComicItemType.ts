@@ -5,9 +5,9 @@ export type ComicItemType = {
 	type: string | '';
 	chapter: string | '';
 	rating: string | '';
-	genre: string | '';
-	year: string | '';
-	isBookmark: boolean;
+	genre?: string | '';
+	year?: string | '';
+	isBookmark?: boolean | false;
 };
 
 export function parseComicItemFromJson(json: any): ComicItemType {
