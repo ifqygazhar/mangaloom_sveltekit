@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { baseurlStore } from '$lib/stores/baseurlStore';
-	import { onMount } from 'svelte';
 	import NavLeft from '$lib/components/NavLeft.svelte';
 	import NavRight from '$lib/components/NavRight.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
@@ -10,9 +10,70 @@
 	let { children, data } = $props();
 	const year: number = new Date().getFullYear();
 
+	let isDesktop = $state(false);
+
 	onMount(() => {
 		if (data.baseUrl) {
 			baseurlStore.set(data.baseUrl);
+		}
+
+		const desktopBreakpoint = 1024;
+
+		// Function to check and update the screen size state.
+		const checkScreenSize = () => {
+			isDesktop = window.innerWidth >= desktopBreakpoint;
+		};
+
+		checkScreenSize();
+
+		window.addEventListener('resize', checkScreenSize);
+
+		return () => {
+			window.removeEventListener('resize', checkScreenSize);
+		};
+	});
+
+	$effect(() => {
+		const scriptId = 'cid0020000420231913318';
+		const existingScript = document.getElementById(scriptId);
+
+		if (isDesktop) {
+			if (!existingScript) {
+				const script = document.createElement('script');
+				script.id = scriptId;
+				script.src = '//st.chatango.com/js/gz/emb.js';
+				script.style.width = '200px';
+				script.style.height = '300px';
+				script.async = true;
+				script.setAttribute('data-cfasync', 'false');
+				script.textContent = JSON.stringify({
+					handle: 'mangaloom',
+					arch: 'js',
+					styles: {
+						a: 'ffcc33',
+						b: 100,
+						c: '000000',
+						d: '000000',
+						k: 'ffcc33',
+						l: 'ffcc33',
+						m: 'ffcc33',
+						p: '10',
+						q: 'ffcc33',
+						r: 100,
+						pos: 'bl',
+						cv: 1,
+						cvbg: 'ffcc33',
+						cvfg: '000000',
+						cvw: 75,
+						cvh: 30
+					}
+				});
+				document.body.appendChild(script);
+			}
+		} else {
+			if (existingScript) {
+				document.body.removeChild(existingScript);
+			}
 		}
 	});
 </script>
@@ -64,10 +125,11 @@
 	<NavRight />
 </header>
 
-<main class="flex-1">
+<main class="">
 	{@render children?.()}
 </main>
 <BottomNav />
+
 <footer class="mt-auto bg-secondary pt-2 pb-22 text-center text-white lg:p-4">
 	<p class="mb-1">
 		Dibuat dengan
