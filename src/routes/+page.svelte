@@ -2,7 +2,7 @@
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 	import Ads from '$lib/components/Ads.svelte';
 	import GeneralHorizontalComic from '$lib/components/GeneralHorizontalComic.svelte';
-	import { Phone } from '@lucide/svelte';
+	import { Phone, Coffee, Heart } from '@lucide/svelte';
 
 	const dummies: ComicItemType[] = [
 		{
@@ -86,17 +86,29 @@
 	];
 </script>
 
-<GeneralHorizontalComic
-	items={dummies}
-	title="Rekomendasi Bulan Ini 🌟"
-	shortdesc="Sebuah mahakarya yang direkomendasikan untuk Anda"
-/>
-
 {#snippet phoneIcon()}
 	<Phone
 		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
 	/>
 {/snippet}
+
+{#snippet coffeIcon()}
+	<Coffee
+		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+	/>
+{/snippet}
+
+{#snippet hearthIcon()}
+	<Heart
+		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+	/>
+{/snippet}
+
+<GeneralHorizontalComic
+	items={dummies}
+	title="Rekomendasi Bulan Ini 🌟"
+	shortdesc="Sebuah mahakarya yang direkomendasikan untuk Anda"
+/>
 
 <Ads
 	icon={phoneIcon}
@@ -112,6 +124,13 @@
 	shortdesc="Deretan komik populer pilihan pembaca"
 />
 
+<Ads
+	icon={coffeIcon}
+	title="Donasi sangat membantu agar web/app tetap hidup"
+	btnText="Donate"
+	url="https://saweria.co/ifqygazhar"
+/>
+
 <GeneralHorizontalComic
 	items={dummies}
 	title="Komik Aksi Untuk Kamu 🔫"
@@ -122,6 +141,12 @@
 	items={dummies}
 	title="Komedi Acumalaka 😂"
 	shortdesc="Komik dengan genre komedi terbaik"
+/>
+<Ads
+	icon={hearthIcon}
+	title="Follow instagram kita"
+	btnText="Follow"
+	url="https://www.instagram.com/mangaloom.app"
 />
 
 <GeneralHorizontalComic
