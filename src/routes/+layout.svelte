@@ -19,6 +19,44 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<!-- Primary SEO -->
+	<title>Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis</title>
+	<meta
+		name="description"
+		content="Mangaloom — baca komik manga, manhwa, dan manhua secara gratis. Temukan ratusan judul terbaru dan klasik, update harian, dan antarmuka yang ringan untuk pengalaman membaca terbaik."
+	/>
+	<meta
+		name="keywords"
+		content="Mangaloom, baca komik, manga, manhwa, manhua, komik gratis, baca manga online"
+	/>
+	<meta name="robots" content="index, follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="theme-color" content="#000000" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis" />
+	<meta
+		property="og:description"
+		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap, update cepat, dan pengalaman membaca yang nyaman."
+	/>
+	<meta property="og:image" content="og-image.png" />
+	<meta property="og:url" content="" />
+	<meta property="og:site_name" content="Mangaloom" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis" />
+	<meta
+		name="twitter:description"
+		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap dan update harian."
+	/>
+	<meta name="twitter:image" content="{data.baseUrl ?? ''}/og-image.png" />
+
+	<!-- Canonical (gunakan baseUrl yang disediakan oleh data) -->
+	<!-- {#if data?.baseUrl}
+		<link rel="canonical" href={data.baseUrl} />
+	{/if} -->
 </svelte:head>
 
 <header class="sticky top-0 z-50 flex w-full items-center justify-between bg-secondary px-4 py-2">
@@ -26,7 +64,7 @@
 	<NavRight />
 </header>
 
-<main class="flex h-screen flex-col overflow-auto bg-black">
+<main class="flex-1">
 	{@render children?.()}
 </main>
 <BottomNav />

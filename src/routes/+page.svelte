@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
+	import Ads from '$lib/components/Ads.svelte';
 	import GeneralHorizontalComic from '$lib/components/GeneralHorizontalComic.svelte';
+	import { Phone } from '@lucide/svelte';
+
 	const dummies: ComicItemType[] = [
 		{
 			title: 'Sleeping Ranker',
@@ -87,6 +90,19 @@
 	items={dummies}
 	title="Rekomendasi Bulan Ini 🌟"
 	shortdesc="Sebuah mahakarya yang direkomendasikan untuk Anda"
+/>
+
+{#snippet phoneIcon()}
+	<Phone
+		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+	/>
+{/snippet}
+
+<Ads
+	icon={phoneIcon}
+	title="Ingin membuat website atau aplikasi serupa ?"
+	btnText="Hubungi"
+	url="https://ifqy.dev"
 />
 
 <GeneralHorizontalComic
