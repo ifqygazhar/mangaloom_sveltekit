@@ -8,7 +8,8 @@
 		CarouselNext,
 		CarouselPrevious
 	} from '$lib/components/ui/carousel';
-	import { Star, Eye } from '@lucide/svelte';
+	import Eye from '@lucide/svelte/icons/eye';
+	import Star from '@lucide/svelte/icons/star';
 	import LazyImage from '$lib/components/LazyImage.svelte';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { get } from 'svelte/store';

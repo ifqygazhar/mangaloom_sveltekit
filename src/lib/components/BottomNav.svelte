@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Fa from 'svelte-fa';
 	import { links, useCurrentPath, isActive } from '$lib/utils/navigation';
 	const currentPath = useCurrentPath();
 </script>
@@ -16,7 +15,7 @@
 					aria-current={isActive($currentPath, link.href) ? 'page' : null}
 				>
 					{#if link.icon}
-						<Fa icon={link.icon} class="mb-1" style="width:1.25rem;height:1.25rem;" />
+						<svelte:component this={link.icon} class="mb-1 h-5 w-5" />
 					{/if}
 					<span>{link.label}</span>
 				</a>

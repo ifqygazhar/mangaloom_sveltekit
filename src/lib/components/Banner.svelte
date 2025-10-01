@@ -2,7 +2,9 @@
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 	import { Carousel, CarouselContent, CarouselItem } from '$lib/components/ui/carousel';
 	import LazyImage from '$lib/components/LazyImage.svelte';
-	import { Book, Eye, Star } from '@lucide/svelte';
+	import Book from '@lucide/svelte/icons/book';
+	import Eye from '@lucide/svelte/icons/eye';
+	import Star from '@lucide/svelte/icons/star';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { SourceType } from '$lib/config/sourceType';
 	import Autoplay from 'embla-carousel-autoplay';

@@ -5,7 +5,10 @@
 	import Banner from '$lib/components/Banner.svelte';
 	import GeneralHorizontalComic from '$lib/components/GeneralHorizontalComic.svelte';
 	import GeneralVerticalComic from '$lib/components/GeneralVerticalComic.svelte';
-	import { Phone, Coffee, Heart, Book } from '@lucide/svelte';
+	import Phone from '@lucide/svelte/icons/phone';
+	import Coffee from '@lucide/svelte/icons/coffee';
+	import Heart from '@lucide/svelte/icons/heart';
+	import Book from '@lucide/svelte/icons/book';
 	import shuffle from '$lib/utils/shuffleitem';
 
 	function goToAll() {

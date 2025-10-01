@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import Fa from 'svelte-fa';
-	import { faBookmark, faHistory, faSearch, faMobile } from '@fortawesome/free-solid-svg-icons';
+	import Bookmark from '@lucide/svelte/icons/bookmark';
+	import History from '@lucide/svelte/icons/history';
+	import Search from '@lucide/svelte/icons/search';
+	import Smartphone from '@lucide/svelte/icons/smartphone';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { SourceType } from '$lib/config/sourceType';
 	// 1. Impor ikon Menu dan X dari lucide-svelte
-	import { Menu, X } from '@lucide/svelte';
+	import Menu from '@lucide/svelte/icons/menu';
+	import X from '@lucide/svelte/icons/x';
 
 	let { isOpen = false, selected = SourceType.V3 } = $props<{
 		isOpen?: boolean;
@@ -51,7 +54,7 @@
 		class="relative w-full max-w-xs flex-1 sm:max-w-md lg:w-80 lg:flex-none"
 	>
 		<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-			<Fa icon={faSearch} class="text-gray-400" style="width:1.25rem;height:1.25rem;" />
+			<Search class="h-5 w-5 text-gray-400" />
 		</div>
 		<input
 			name="q"
@@ -93,11 +96,7 @@
 				title="Bookmark"
 				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
 			>
-				<Fa
-					icon={faBookmark}
-					class="text-white group-hover:text-black"
-					style="width:1.25rem;height:1.25rem;"
-				/>
+				<Bookmark class="h-5 w-5 text-white group-hover:text-black" />
 				<span class="text-white lg:hidden">Bookmark</span>
 			</button>
 
@@ -106,11 +105,7 @@
 				title="History"
 				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
 			>
-				<Fa
-					icon={faHistory}
-					class="text-white group-hover:text-black"
-					style="width:1.25rem;height:1.25rem;"
-				/>
+				<History class="h-5 w-5 text-white group-hover:text-black" />
 				<span class="text-white lg:hidden">History</span>
 			</button>
 
@@ -131,8 +126,7 @@
 				title="Download"
 				class="group flex w-full cursor-pointer items-center gap-2 rounded-md border-2 border-primary bg-transparent p-2 transition-colors hover:bg-primary focus:ring-2 focus:outline-none"
 			>
-				<Fa
-					icon={faMobile}
+				<Smartphone
 					class="h-[1.25rem] w-[1.25rem] text-white transition-colors group-hover:text-black"
 				/>
 				<span class="font-medium text-white transition-colors group-hover:text-black">Download</span

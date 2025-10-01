@@ -1,21 +1,25 @@
 import { writable, type Readable } from 'svelte/store';
 import { onMount } from 'svelte';
 import { afterNavigate } from '$app/navigation';
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faHome, faClock, faList, faTags } from '@fortawesome/free-solid-svg-icons';
+import type { Component } from 'svelte';
+
+import Home from '@lucide/svelte/icons/home';
+import Clock from '@lucide/svelte/icons/clock';
+import List from '@lucide/svelte/icons/list';
+import Tags from '@lucide/svelte/icons/tags';
 
 export type NavLink = {
 	href: string;
 	label: string;
 	id: number;
-	icon?: IconDefinition;
+	icon?: Component;
 };
 
 export const links: NavLink[] = [
-	{ href: '/', label: 'Beranda', id: 1, icon: faHome },
-	{ href: '/terbaru', label: 'Terbaru', id: 2, icon: faClock },
-	{ href: '/daftar-komik', label: 'Daftar Komik', id: 3, icon: faList },
-	{ href: '/genre', label: 'Genre', id: 4, icon: faTags }
+	{ href: '/', label: 'Beranda', id: 1, icon: Home },
+	{ href: '/terbaru', label: 'Terbaru', id: 2, icon: Clock },
+	{ href: '/daftar-komik', label: 'Daftar Komik', id: 3, icon: List },
+	{ href: '/genre', label: 'Genre', id: 4, icon: Tags }
 ];
 
 export function isActive(pathname: string, href: string) {

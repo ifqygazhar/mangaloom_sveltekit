@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 	import { getFlagSrc } from '$lib/utils/flaghelper';
-	import { Star, Eye } from '@lucide/svelte';
+	import Eye from '@lucide/svelte/icons/eye';
+	import Star from '@lucide/svelte/icons/star';
 	import LazyImage from './LazyImage.svelte';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { get } from 'svelte/store';
