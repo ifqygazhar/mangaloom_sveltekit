@@ -118,7 +118,7 @@
 <div class="mt-4 flex justify-center gap-2">
 	{#each slides as item, i (item.href)}
 		<button
-			on:click={() => api?.scrollTo(i)}
+			onclick={() => api?.scrollTo(i)}
 			class="h-2 w-2 cursor-pointer rounded-full transition-all duration-300"
 			class:bg-primary={current === i}
 			class:bg-muted={current !== i}
