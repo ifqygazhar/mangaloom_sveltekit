@@ -17,7 +17,7 @@
 			baseurlStore.set(data.baseUrl);
 		}
 
-		const desktopBreakpoint = 1024;
+		const desktopBreakpoint = 1280;
 
 		// Function to check and update the screen size state.
 		const checkScreenSize = () => {

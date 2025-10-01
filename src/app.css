@@ -115,6 +115,7 @@
 
 @theme {
 	--breakpoint-sm: 400px;
+	--breakpoint-lg: 1280px;
 }
 
 @layer base {

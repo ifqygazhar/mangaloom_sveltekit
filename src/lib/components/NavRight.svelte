@@ -133,8 +133,7 @@
 			>
 				<Fa
 					icon={faMobile}
-					class="text-white transition-colors group-hover:text-black"
-					style="width:1.25rem;height:1.25rem;"
+					class="h-[1.25rem] w-[1.25rem] text-white transition-colors group-hover:text-black"
 				/>
 				<span class="font-medium text-white transition-colors group-hover:text-black">Download</span
 				>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 	import { getFlagSrc } from '$lib/utils/flaghelper';
-
 	import {
 		Carousel,
 		CarouselContent,
@@ -9,11 +8,20 @@
 		CarouselNext,
 		CarouselPrevious
 	} from '$lib/components/ui/carousel';
-	import { Star } from '@lucide/svelte';
+	import { Star, Eye } from '@lucide/svelte';
+	import LazyImage from '$lib/components/LazyImage.svelte';
+	import { sourceStore } from '$lib/stores/sourceStore';
+	import { get } from 'svelte/store';
+	import { SourceType } from '$lib/config/sourceType';
+	import { onDestroy } from 'svelte';
 	let { items = [], isPopuler = false } = $props<{
 		items?: ComicItemType[];
 		isPopuler?: boolean;
 	}>();
+
+	let currentSource = $state(get(sourceStore));
+	const unsub = sourceStore.subscribe((v) => (currentSource = v));
+	onDestroy(() => unsub());
 </script>
 
 <div class="relative">
@@ -26,20 +34,20 @@
 	>
 		<CarouselContent class="-ml-2 md:-ml-4">
 			{#each items as item, i (item.href)}
-				<CarouselItem class="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6">
+				<CarouselItem class="basis-1/2 sm:basis-1/3 lg:basis-1/5 md:basis-1/4 xl:basis-1/6">
 					<div class="px-4">
 						<a href={item.href} class="group">
 							<div class="relative aspect-[3/4] overflow-hidden">
-								<img
+								<LazyImage
 									src={item.thumbnail}
 									alt={item.title}
+									containerClass="h-full w-full"
 									class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 								/>
-
 								<!-- Popular badge (left) — hanya muncul jika isPopuler true -->
 								{#if isPopuler}
 									<div
-										class="absolute top-2 left-2 flex h-[1.5rem] w-[1.5rem] items-center justify-center border-2 border-black bg-primary md:h-[2rem] md:w-[2rem] lg:h-[2rem] lg:w-[2rem]"
+										class="absolute top-2 left-2 flex h-[1.5rem] w-[1.5rem] items-center justify-center border-2 border-black bg-primary lg:h-[2rem] lg:w-[2rem] md:h-[2rem] md:w-[2rem]"
 									>
 										<h4 class="text-black">{i + 1}</h4>
 									</div>
@@ -67,7 +75,11 @@
 								<div class="mt-1 flex items-center justify-between text-xs text-gray-400">
 									<span>{item.chapter}</span>
 									<div class="flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5">
-										<Star class="h-3 w-3 text-yellow-400" fill="currentColor" />
+										{#if currentSource === SourceType.V3}
+											<Eye class="h-3 w-3 text-yellow-400" />
+										{:else}
+											<Star class="h-3 w-3 text-yellow-400" fill="currentColor" />
+										{/if}
 										<span>{item.rating}</span>
 									</div>
 								</div>
@@ -78,8 +90,8 @@
 			{/each}
 		</CarouselContent>
 
-		<CarouselPrevious class="ml-12 hidden sm:flex" />
-		<CarouselNext class="mr-12 hidden sm:flex" />
+		<CarouselPrevious class="ml-12 hidden cursor-pointer sm:flex" />
+		<CarouselNext class="mr-12 hidden cursor-pointer sm:flex" />
 	</Carousel>
 
 	<div

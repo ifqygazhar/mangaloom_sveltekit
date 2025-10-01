@@ -1,8 +1,20 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 	import Ads from '$lib/components/Ads.svelte';
+	import Banner from '$lib/components/Banner.svelte';
 	import GeneralHorizontalComic from '$lib/components/GeneralHorizontalComic.svelte';
-	import { Phone, Coffee, Heart } from '@lucide/svelte';
+	import GeneralVerticalComic from '$lib/components/GeneralVerticalComic.svelte';
+	import Carousel from '$lib/components/ui/carousel/carousel.svelte';
+	import { SourceType } from '$lib/config/sourceType';
+	import { sourceStore } from '$lib/stores/sourceStore';
+	import { Phone, Coffee, Heart, Book, Eye, Star } from '@lucide/svelte';
+	import { onDestroy } from 'svelte';
+	import { get } from 'svelte/store';
+
+	function goToAll() {
+		goto('/all');
+	}
 
 	const dummies: ComicItemType[] = [
 		{
@@ -88,21 +100,23 @@
 
 {#snippet phoneIcon()}
 	<Phone
-		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+		class="h-4 w-4 text-black group-hover:text-primary-foreground lg:h-5 md:h-5 md:text-white group-hover:md:text-black"
 	/>
 {/snippet}
 
 {#snippet coffeIcon()}
 	<Coffee
-		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+		class="h-4 w-4 text-black group-hover:text-primary-foreground lg:h-5 md:h-5 md:text-white group-hover:md:text-black"
 	/>
 {/snippet}
 
 {#snippet hearthIcon()}
 	<Heart
-		class="h-4 w-4 text-black group-hover:text-primary-foreground md:h-5 md:text-white group-hover:md:text-black lg:h-5"
+		class="h-4 w-4 text-black group-hover:text-primary-foreground lg:h-5 md:h-5 md:text-white group-hover:md:text-black"
 	/>
 {/snippet}
+
+<Banner items={dummies} />
 
 <GeneralHorizontalComic
 	items={dummies}
@@ -137,6 +151,13 @@
 	shortdesc="Komik dengan genre aksi terbaik"
 />
 
+<GeneralVerticalComic
+	items={dummies}
+	title="Episode Baru 🎬"
+	shortdesc="Coba cek siapa tau ada komik yang kamu ikutin"
+	isPopuler={false}
+/>
+
 <GeneralHorizontalComic
 	items={dummies}
 	title="Komedi Acumalaka 😂"
@@ -154,3 +175,15 @@
 	title="Echhiiii!! 👀"
 	shortdesc="Komik yang bikin kamu panas dingin le"
 />
+
+<div class="p-4">
+	<a
+		data-sveltekit-preload-data="tap"
+		href="/all"
+		class="group flex w-full cursor-pointer flex-row items-center justify-center gap-2 border-2 border-primary bg-primary p-2 md:bg-transparent md:hover:bg-primary"
+		aria-label="Lihat Semua Komik"
+	>
+		<Book class="h-5 w-5 text-black md:text-white md:group-hover:text-black" />
+		<h3 class="text-black md:text-white md:group-hover:text-black">Lihat Semua Komik</h3>
+	</a>
+</div>
