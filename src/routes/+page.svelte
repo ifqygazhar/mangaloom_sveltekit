@@ -5,12 +5,8 @@
 	import Banner from '$lib/components/Banner.svelte';
 	import GeneralHorizontalComic from '$lib/components/GeneralHorizontalComic.svelte';
 	import GeneralVerticalComic from '$lib/components/GeneralVerticalComic.svelte';
-	import Carousel from '$lib/components/ui/carousel/carousel.svelte';
-	import { SourceType } from '$lib/config/sourceType';
-	import { sourceStore } from '$lib/stores/sourceStore';
-	import { Phone, Coffee, Heart, Book, Eye, Star } from '@lucide/svelte';
-	import { onDestroy } from 'svelte';
-	import { get } from 'svelte/store';
+	import { Phone, Coffee, Heart, Book } from '@lucide/svelte';
+	import shuffle from '$lib/utils/shuffleitem';
 
 	function goToAll() {
 		goto('/all');
@@ -119,7 +115,7 @@
 <Banner items={dummies} />
 
 <GeneralHorizontalComic
-	items={dummies}
+	items={shuffle(dummies)}
 	title="Rekomendasi Bulan Ini 🌟"
 	shortdesc="Sebuah mahakarya yang direkomendasikan untuk Anda"
 />
@@ -132,7 +128,7 @@
 />
 
 <GeneralHorizontalComic
-	items={dummies}
+	items={shuffle(dummies)}
 	isPopuler={true}
 	title="Komik Populer 🚀"
 	shortdesc="Deretan komik populer pilihan pembaca"
@@ -146,7 +142,7 @@
 />
 
 <GeneralHorizontalComic
-	items={dummies}
+	items={shuffle(dummies)}
 	title="Komik Aksi Untuk Kamu 🔫"
 	shortdesc="Komik dengan genre aksi terbaik"
 />
@@ -159,7 +155,7 @@
 />
 
 <GeneralHorizontalComic
-	items={dummies}
+	items={shuffle(dummies)}
 	title="Komedi Acumalaka 😂"
 	shortdesc="Komik dengan genre komedi terbaik"
 />
@@ -171,7 +167,7 @@
 />
 
 <GeneralHorizontalComic
-	items={dummies}
+	items={shuffle(dummies)}
 	title="Echhiiii!! 👀"
 	shortdesc="Komik yang bikin kamu panas dingin le"
 />

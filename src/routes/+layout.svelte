@@ -12,27 +12,39 @@
 
 	let isDesktop = $state(false);
 
-	onMount(() => {
-		if (data.baseUrl) {
-			baseurlStore.set(data.baseUrl);
+	onMount(async () => {
+		// Logika untuk baseurlStore dengan caching
+		const storageKey = 'baseUrl';
+		const cachedBaseUrl = localStorage.getItem(storageKey);
+
+		if (cachedBaseUrl) {
+			// Jika ada di cache, langsung gunakan
+			baseurlStore.set(cachedBaseUrl);
+		} else {
+			// Jika tidak ada, fetch dari API endpoint yang aman
+			const response = await fetch('/api/base-url');
+			if (response.ok) {
+				const data = await response.json();
+				const freshBaseUrl = data.baseUrl;
+				if (freshBaseUrl) {
+					baseurlStore.set(freshBaseUrl);
+					localStorage.setItem(storageKey, freshBaseUrl);
+				}
+			}
 		}
 
+		// Logika untuk screen size (tetap sama)
 		const desktopBreakpoint = 1280;
-
-		// Function to check and update the screen size state.
 		const checkScreenSize = () => {
 			isDesktop = window.innerWidth >= desktopBreakpoint;
 		};
-
 		checkScreenSize();
-
 		window.addEventListener('resize', checkScreenSize);
 
 		return () => {
 			window.removeEventListener('resize', checkScreenSize);
 		};
 	});
-
 	$effect(() => {
 		const scriptId = 'cid0020000420231913318';
 		const existingScript = document.getElementById(scriptId);

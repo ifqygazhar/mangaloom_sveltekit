@@ -6,6 +6,8 @@
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { SourceType } from '$lib/config/sourceType';
 	import Autoplay from 'embla-carousel-autoplay';
+	import shuffle from '$lib/utils/shuffleitem';
+	import { fade } from 'svelte/transition';
 	import type { CarouselAPI } from './ui/carousel/context';
 
 	let { items = [], count = 4 } = $props<{
@@ -18,56 +20,57 @@
 
 	const plugins = [
 		Autoplay({
-			delay: 4000, // Set the delay in milliseconds (e.g., 2000ms = 2 seconds)
-			stopOnInteraction: true // Optionally stop autoplay on user interaction
+			delay: 4000,
+			stopOnInteraction: true
 		})
 	];
 
-	function shuffle<T>(arr: T[]): T[] {
-		const a = arr.slice();
-		for (let i = a.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[a[i], a[j]] = [a[j], a[i]];
-		}
-		return a;
-	}
 	const slides: ComicItemType[] = $derived(items.length ? shuffle(items).slice(0, count) : []);
 
 	$effect(() => {
-		if (api) {
+		if (!api) return;
+
+		current = api.selectedScrollSnap();
+
+		const onSelect = () => {
 			current = api.selectedScrollSnap();
-			api.on('select', () => {
-				current = api!.selectedScrollSnap();
-			});
-		}
+		};
+		api.on('select', onSelect);
+
+		return () => {
+			api?.off('select', onSelect);
+		};
 	});
 </script>
 
-<Carousel
-	setApi={(emblaApi) => (api = emblaApi)}
-	{plugins}
-	opts={{
-		align: 'center',
-		loop: true
-	}}
-	class="w-full"
->
-	<CarouselContent>
-		{#each slides as item (item.href)}
-			<CarouselItem class="w-full">
-				<div class="relative h-[11rem] w-full overflow-hidden md:h-[20rem]">
-					<LazyImage
-						src={item.thumbnail}
-						alt={item.title}
-						containerClass="absolute inset-0 h-full w-full"
-						class="h-full w-full object-cover"
-					/>
+<div class="relative h-[11rem] w-full overflow-hidden md:h-[20rem]">
+	{#if slides[current]}
+		<div class="absolute inset-0 z-0" transition:fade={{ duration: 300 }}>
+			<LazyImage
+				src={slides[current].thumbnail}
+				alt={slides[current].title}
+				containerClass="h-full w-full"
+				class="h-full w-full object-cover"
+			/>
+		</div>
+	{/if}
+	<div class="absolute inset-0 z-10 bg-black/30 backdrop-blur-md"></div>
 
-					<div class="absolute inset-0 z-10 bg-black/30 backdrop-blur-md"></div>
-
-					<div class="absolute inset-0 z-20 flex items-center justify-between gap-4 p-4 text-white">
+	<Carousel
+		setApi={(emblaApi) => (api = emblaApi)}
+		{plugins}
+		opts={{
+			align: 'center',
+			loop: true
+		}}
+		class="relative z-20 h-full w-full"
+	>
+		<CarouselContent class="h-full">
+			{#each slides as item (item.href)}
+				<CarouselItem class="h-full w-full">
+					<div class="flex h-full items-center justify-between gap-4 p-4 text-white">
 						<div class="flex flex-col gap-2">
-							<h1 class="line-clamp-3 text-[1rem] font-bold md:text-[2rem]">
+							<h1 class="line-clamp-2 text-[1rem] font-bold md:text-[2rem]">
 								{item.title}
 							</h1>
 							<div class="flex flex-row gap-2">
@@ -106,16 +109,17 @@
 							class="h-full w-full border-2 border-gray-400 object-cover"
 						/>
 					</div>
-				</div>
-			</CarouselItem>
-		{/each}
-	</CarouselContent>
-</Carousel>
+				</CarouselItem>
+			{/each}
+		</CarouselContent>
+	</Carousel>
+</div>
+
 <div class="mt-4 flex justify-center gap-2">
 	{#each slides as item, i (item.href)}
 		<button
-			onclick={() => api?.scrollTo(i)}
-			class="h-2 w-2 rounded-full transition-all duration-300"
+			on:click={() => api?.scrollTo(i)}
+			class="h-2 w-2 cursor-pointer rounded-full transition-all duration-300"
 			class:bg-primary={current === i}
 			class:bg-muted={current !== i}
 			class:w-4={current === i}

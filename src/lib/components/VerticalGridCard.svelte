@@ -26,11 +26,11 @@
 <a href={item.href} class="group block">
 	<div class="relative overflow-hidden rounded-md bg-gray-900">
 		<!-- Gambar dengan aspect ratio konsisten -->
-		<div class="aspect-[3/2] w-full overflow-hidden bg-gray-800">
+		<div class="aspect-[3/4] w-full overflow-hidden bg-gray-800">
 			<LazyImage
 				src={item.thumbnail}
 				alt={item.title}
-				containerClass="aspect-[3/2] w-full overflow-hidden"
+				containerClass="aspect-[3/4] w-full overflow-hidden"
 				class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 			/>
 		</div>
