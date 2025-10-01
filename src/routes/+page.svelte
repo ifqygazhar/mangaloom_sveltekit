@@ -148,7 +148,7 @@
 />
 
 <GeneralVerticalComic
-	items={dummies}
+	items={dummies.slice(3, dummies.length)}
 	title="Episode Baru 🎬"
 	shortdesc="Coba cek siapa tau ada komik yang kamu ikutin"
 	isPopuler={false}

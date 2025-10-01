@@ -16,7 +16,7 @@
 	}>();
 
 	let api = $state<CarouselAPI>();
-	let current = $state(0);
+	let current = $state<number>(0);
 
 	const plugins = [
 		Autoplay({
@@ -28,24 +28,18 @@
 	const slides: ComicItemType[] = $derived(items.length ? shuffle(items).slice(0, count) : []);
 
 	$effect(() => {
-		if (!api) return;
-
-		current = api.selectedScrollSnap();
-
-		const onSelect = () => {
+		if (api) {
 			current = api.selectedScrollSnap();
-		};
-		api.on('select', onSelect);
-
-		return () => {
-			api?.off('select', onSelect);
-		};
+			api.on('select', () => {
+				current = api!.selectedScrollSnap();
+			});
+		}
 	});
 </script>
 
 <div class="relative h-[11rem] w-full overflow-hidden md:h-[20rem]">
 	{#if slides[current]}
-		<div class="absolute inset-0 z-0" transition:fade={{ duration: 300 }}>
+		<div class="absolute inset-0 z-0">
 			<LazyImage
 				src={slides[current].thumbnail}
 				alt={slides[current].title}
