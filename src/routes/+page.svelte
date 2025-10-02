@@ -15,9 +15,6 @@
 
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
-	function goToAll() {
-		goto(resolve('/daftar-komik'));
-	}
 	export let data: PageData;
 
 	$: recommended = data.recommended;

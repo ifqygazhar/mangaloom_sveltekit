@@ -62,7 +62,7 @@
 </script>
 
 <GeneralVerticalComic
-	title="Daftar Komik 📜"
+	title="Semua Komik 📖"
 	shortdesc="Jelajahi koleksi lengkap komik kami"
 	{items}
 />
