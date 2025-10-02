@@ -5,28 +5,31 @@ import { Endpoint } from '$lib/utils/endpoint';
 import { header } from '$lib/utils/header';
 import { safeJsonParse } from '$lib/utils/safeJsonParse.js';
 
-export async function load({ fetch, url }) {
+export async function load({ fetch, url, params }) {
 	try {
+		const genre = params.href;
 		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;
 
-		const newKomikFetch = await fetch(`${baseUrl}${endpointInstance.newComic(1)}`, {
+		const genreKomikFetch = await fetch(`${baseUrl}${endpointInstance.comicByGenre(genre, 1)}`, {
 			headers: header
 		});
-		const komik = await safeJsonParse<ComicItemType>(newKomikFetch);
+		const komik = await safeJsonParse<ComicItemType>(genreKomikFetch);
 
 		return {
-			newKomik: komik,
+			genreKomik: komik,
 			source: source,
+			genre: genre,
 			hasMore: komik.length > 0
 		};
 	} catch (e) {
-		console.error('Error loading new komik:', e);
+		console.error('Error loading genre komik:', e);
 		return {
 			error: 'Gagal memuat data komik dari server. Silakan coba lagi nanti.',
-			newKomik: [],
+			genreKomik: [],
+			genre: '',
 			source: SourceType.V3,
 			hasMore: false
 		};
