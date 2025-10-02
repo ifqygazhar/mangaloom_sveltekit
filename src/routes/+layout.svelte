@@ -6,6 +6,7 @@
 	import NavLeft from '$lib/components/NavLeft.svelte';
 	import NavRight from '$lib/components/NavRight.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
+	import LoadingBar from '$lib/components/LoadingBar.svelte';
 
 	let { children } = $props();
 	const year: number = new Date().getFullYear();
@@ -118,6 +119,7 @@
 </header>
 
 <main class="">
+	<LoadingBar />
 	{@render children?.()}
 </main>
 <BottomNav />
