@@ -1,7 +1,9 @@
-import { API_KEY, URI } from '$env/static/private';
+import { URI } from '$env/static/private';
 import type { ComicItemType } from '$lib/api/types/ComicItemType.js';
 import { SourceType } from '$lib/config/sourceType';
 import { Endpoint } from '$lib/utils/endpoint';
+import { header } from '$lib/utils/header';
+import { safeJsonParse } from '$lib/utils/safeJsonParse';
 
 export async function load({ fetch, url }) {
 	console.log(`Source: ${url.searchParams.get('source')}`);
@@ -11,11 +13,7 @@ export async function load({ fetch, url }) {
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;
-		const header = {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			'X-API-KEY': API_KEY
-		};
+
 		const recommendedPromise = fetch(`${baseUrl}${endpointInstance.recommendedComic}`, {
 			headers: header
 		});
@@ -43,21 +41,13 @@ export async function load({ fetch, url }) {
 			comedyPromise,
 			echiPromise
 		]);
-		const safeJsonParse = async (response: Response): Promise<ComicItemType[]> => {
-			if (!response.ok) {
-				return [];
-			}
-			const api = await response.json();
 
-			return Array.isArray(api.data) ? api.data : [];
-		};
-
-		const recommendedRes = await safeJsonParse(recommended);
-		const popularRes = await safeJsonParse(popular);
-		const newestRes = await safeJsonParse(newest);
-		const actionRes = await safeJsonParse(action);
-		const comedyRes = await safeJsonParse(comedy);
-		const echiRes = await safeJsonParse(echi);
+		const recommendedRes = await safeJsonParse<ComicItemType>(recommended);
+		const popularRes = await safeJsonParse<ComicItemType>(popular);
+		const newestRes = await safeJsonParse<ComicItemType>(newest);
+		const actionRes = await safeJsonParse<ComicItemType>(action);
+		const comedyRes = await safeJsonParse<ComicItemType>(comedy);
+		const echiRes = await safeJsonParse<ComicItemType>(echi);
 
 		return {
 			recommended: recommendedRes,

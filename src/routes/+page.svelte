@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	import Ads from '$lib/components/Ads.svelte';
 	import Banner from '$lib/components/Banner.svelte';
@@ -11,11 +12,11 @@
 	import Book from '@lucide/svelte/icons/book';
 	import shuffle from '$lib/utils/shuffleitem';
 	import type { PageData } from './$types';
-	import AlertTriangle from '@lucide/svelte/icons/alert-triangle';
+
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
 	function goToAll() {
-		goto('/all');
+		goto(resolve('/daftar-komik'));
 	}
 	export let data: PageData;
 
