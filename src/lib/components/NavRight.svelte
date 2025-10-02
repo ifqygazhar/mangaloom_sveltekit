@@ -10,6 +10,15 @@
 	import { goto, invalidate } from '$app/navigation';
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
+	import { Star } from '@lucide/svelte';
+	import type { ComicItemType } from '$lib/api/types/ComicItemType';
+
+	// State untuk pencarian
+	let searchQuery = $state('');
+	let searchResults = $state<ComicItemType[]>([]);
+	let isLoading = $state(false);
+	let showResults = $state(false);
+	let searchTimeout: NodeJS.Timeout | null = null;
 
 	let { isOpen = false, selected = SourceType.V3 } = $props<{
 		isOpen?: boolean;
@@ -18,6 +27,76 @@
 
 	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
 	onDestroy(() => unsubscribe());
+
+	// Fungsi untuk menutup hasil pencarian saat klik di luar
+	function closeSearchResults() {
+		showResults = false;
+	}
+
+	// Fungsi untuk mengambil hasil pencarian dengan debouncing
+	async function fetchSearchResults(query: string) {
+		if (!query.trim()) {
+			searchResults = [];
+			showResults = false;
+			return;
+		}
+
+		isLoading = true;
+		showResults = true;
+
+		try {
+			// Ambil source dari store atau props
+			const source = selected || SourceType.V3;
+			const response = await fetch(
+				`/api/search?query=${encodeURIComponent(query)}&source=${source}`
+			);
+			const data = await response.json();
+
+			if (data.comics) {
+				searchResults = data.comics;
+			} else {
+				searchResults = [];
+			}
+		} catch (error) {
+			console.error('Error fetching search results:', error);
+			searchResults = [];
+		} finally {
+			isLoading = false;
+		}
+	}
+
+	// Efek untuk debouncing - DIPERBAIKI
+	$effect(() => {
+		// Clear timeout sebelumnya
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
+
+		// Set timeout baru
+		if (searchQuery.trim()) {
+			searchTimeout = setTimeout(() => {
+				fetchSearchResults(searchQuery);
+			}, 500);
+		} else {
+			// Reset jika query kosong
+			searchResults = [];
+			showResults = false;
+		}
+	});
+
+	// Cleanup saat component destroyed
+	onDestroy(() => {
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
+	});
+
+	// Fungsi untuk navigasi ke halaman komik
+	function navigateToComic(href: string) {
+		goto(`/detail${href}`);
+		showResults = false;
+		searchQuery = '';
+	}
 
 	function onSourceChange() {
 		sourceStore.set(selected);
@@ -64,23 +143,68 @@
 </script>
 
 <div class="flex items-center gap-3">
-	<form
-		action="/cari"
-		method="get"
-		role="search"
-		class="relative w-full max-w-xs flex-1 sm:max-w-md lg:w-80 lg:flex-none"
-	>
-		<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-			<Search class="h-5 w-5 text-gray-400" />
-		</div>
-		<input
-			name="q"
-			type="search"
-			class="w-full rounded-full bg-[#1E1E1E] py-2 pr-12 pl-10 text-white placeholder-gray-500 transition-all focus:ring-2 focus:ring-primary focus:outline-none"
-			placeholder="Cari komik..."
-			aria-label="Cari Komik"
-		/>
-	</form>
+	<div class="relative w-full max-w-xs flex-1 sm:max-w-md lg:w-80 lg:flex-none">
+		<form action="/cari" method="get" role="search" class="relative">
+			<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+				<Search class="h-5 w-5 text-gray-400" />
+			</div>
+			<input
+				bind:value={searchQuery}
+				onfocus={() => {
+					if (searchQuery && searchResults.length > 0) {
+						showResults = true;
+					}
+				}}
+				type="search"
+				class="w-full rounded-full bg-[#1E1E1E] py-2 pr-12 pl-10 text-white placeholder-gray-500 transition-all focus:ring-2 focus:ring-primary focus:outline-none"
+				placeholder="Cari komik..."
+				aria-label="Cari Komik"
+			/>
+		</form>
+
+		<!-- Hasil Pencarian -->
+		{#if showResults}
+			<div
+				use:clickOutside
+				class="absolute top-full right-0 left-0 z-50 mt-2 max-h-96 w-full overflow-y-auto rounded-lg bg-[#2a2a2a] shadow-lg"
+			>
+				{#if isLoading}
+					<div class="flex items-center justify-center p-4">
+						<div
+							class="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"
+						></div>
+					</div>
+				{:else if searchResults.length > 0}
+					<div class="p-2">
+						{#each searchResults as comic (comic.href)}
+							<button
+								class="flex w-full cursor-pointer items-center gap-3 rounded-md p-3 text-left hover:bg-[#3a3a3a]"
+								onclick={() => navigateToComic(comic.href)}
+							>
+								<img
+									src={comic.thumbnail}
+									alt={comic.title}
+									class="h-12 w-8 rounded object-cover"
+								/>
+								<div class="flex-1">
+									<h3 class="truncate text-sm font-medium text-white">{comic.title}</h3>
+									<div class="flex items-center gap-2 text-xs text-gray-400">
+										<span>{comic.type}</span>
+										<span>•</span>
+										<span>{comic.chapter}</span>
+									</div>
+								</div>
+							</button>
+						{/each}
+					</div>
+				{:else}
+					<div class="p-4 text-center text-sm text-gray-400">
+						Tidak ada hasil untuk "{searchQuery}"
+					</div>
+				{/if}
+			</div>
+		{/if}
+	</div>
 
 	<div class="flex items-center">
 		<button
