@@ -7,7 +7,7 @@
 	import NavRight from '$lib/components/NavRight.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
 
-	let { children, data } = $props();
+	let { children } = $props();
 	const year: number = new Date().getFullYear();
 
 	let isDesktop = $state(false);
@@ -26,7 +26,7 @@
 		};
 	});
 	$effect(() => {
-		const scriptId = 'cid0020000420231913318';
+		const scriptId = 'cid0020000420380444667';
 		const existingScript = document.getElementById(scriptId);
 
 		if (isDesktop) {
