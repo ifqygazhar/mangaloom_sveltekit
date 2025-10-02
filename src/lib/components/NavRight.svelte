@@ -8,7 +8,6 @@
 	import { SourceType } from '$lib/config/sourceType';
 	import { page } from '$app/state';
 	import { goto, invalidate } from '$app/navigation';
-	import { resolve } from '$app/paths';
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
 
@@ -22,6 +21,10 @@
 
 	function onSourceChange() {
 		sourceStore.set(selected);
+
+		if (selected === SourceType.V2) {
+			selected = SourceType.V3;
+		}
 
 		const newUrl = new URL(page.url);
 
@@ -37,11 +40,11 @@
 	}
 
 	const sourceOptions = [
-		{ value: SourceType.V1, label: 'General (v1)' },
-		{ value: SourceType.V2, label: 'General (v2)' },
-		{ value: SourceType.V3, label: 'Stabil (v3)' },
-		{ value: SourceType.V4, label: 'Dark (v4)' },
-		{ value: SourceType.V5, label: 'Manhwa (v5)' }
+		{ value: SourceType.V1, label: 'General (v1)', disabled: false },
+		{ value: SourceType.V2, label: 'Maintenance (v2)', disabled: true },
+		{ value: SourceType.V3, label: 'Stabil (v3)', disabled: false },
+		{ value: SourceType.V4, label: 'Dark (v4)', disabled: false },
+		{ value: SourceType.V5, label: 'Manhwa (v5)', disabled: false }
 	];
 
 	// Aksi untuk mendeteksi klik di luar elemen
@@ -131,7 +134,7 @@
 				aria-label="Pilih sumber"
 			>
 				{#each sourceOptions as opt (opt.value)}
-					<option value={opt.value}>{opt.label}</option>
+					<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
 				{/each}
 			</select>
 

@@ -9,7 +9,6 @@
 	import { SourceType } from '$lib/config/sourceType';
 	import Autoplay from 'embla-carousel-autoplay';
 	import shuffle from '$lib/utils/shuffleitem';
-	import { fade } from 'svelte/transition';
 	import type { CarouselAPI } from './ui/carousel/context';
 
 	let { items = [], count = 4 } = $props<{
@@ -41,14 +40,16 @@
 
 <div class="relative h-[11rem] w-full overflow-hidden md:h-[20rem]">
 	{#if slides[current]}
-		<div class="absolute inset-0 z-0">
-			<LazyImage
-				src={slides[current].thumbnail}
-				alt={slides[current].title}
-				containerClass="h-full w-full"
-				class="h-full w-full object-cover"
-			/>
-		</div>
+		{#key current}
+			<div class="absolute inset-0 z-0 transition-opacity duration-500">
+				<LazyImage
+					src={slides[current].thumbnail}
+					alt={slides[current].title}
+					containerClass="h-full w-full"
+					class="h-full w-full object-cover"
+				/>
+			</div>
+		{/key}
 	{/if}
 	<div class="absolute inset-0 z-10 bg-black/30 backdrop-blur-md"></div>
 
@@ -57,7 +58,8 @@
 		{plugins}
 		opts={{
 			align: 'center',
-			loop: true
+			loop: true,
+			duration: 30
 		}}
 		class="relative z-20 h-full w-full"
 	>
