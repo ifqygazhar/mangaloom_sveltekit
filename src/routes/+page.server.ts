@@ -70,6 +70,7 @@ export async function load({ fetch, url }) {
 	} catch (error) {
 		console.error('Error in +page.server.load:', error);
 		return {
+			error: 'Gagal mengambil data dari server. Silakan coba lagi nanti.',
 			recommended: [],
 			popular: [],
 			newest: [],
