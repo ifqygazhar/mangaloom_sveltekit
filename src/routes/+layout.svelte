@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { baseurlStore } from '$lib/stores/baseurlStore';
+
 	import NavLeft from '$lib/components/NavLeft.svelte';
 	import NavRight from '$lib/components/NavRight.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
@@ -12,27 +12,7 @@
 
 	let isDesktop = $state(false);
 
-	onMount(async () => {
-		// Logika untuk baseurlStore dengan caching
-		const storageKey = 'baseUrl';
-		const cachedBaseUrl = localStorage.getItem(storageKey);
-
-		if (cachedBaseUrl) {
-			// Jika ada di cache, langsung gunakan
-			baseurlStore.set(cachedBaseUrl);
-		} else {
-			// Jika tidak ada, fetch dari API endpoint yang aman
-			const response = await fetch('/api/base-url');
-			if (response.ok) {
-				const data = await response.json();
-				const freshBaseUrl = data.baseUrl;
-				if (freshBaseUrl) {
-					baseurlStore.set(freshBaseUrl);
-					localStorage.setItem(storageKey, freshBaseUrl);
-				}
-			}
-		}
-
+	onMount(() => {
 		// Logika untuk screen size (tetap sama)
 		const desktopBreakpoint = 1280;
 		const checkScreenSize = () => {
@@ -124,7 +104,7 @@
 		name="twitter:description"
 		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap dan update harian."
 	/>
-	<meta name="twitter:image" content="{data.baseUrl ?? ''}/og-image.png" />
+	<meta name="twitter:image" content="/og-image.png" />
 
 	<!-- Canonical (gunakan baseUrl yang disediakan oleh data) -->
 	<!-- {#if data?.baseUrl}

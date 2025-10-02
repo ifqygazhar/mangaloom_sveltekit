@@ -6,7 +6,9 @@
 	import Smartphone from '@lucide/svelte/icons/smartphone';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { SourceType } from '$lib/config/sourceType';
-	// 1. Impor ikon Menu dan X dari lucide-svelte
+	import { page } from '$app/state';
+	import { goto, invalidate } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
 
@@ -20,6 +22,18 @@
 
 	function onSourceChange() {
 		sourceStore.set(selected);
+
+		const newUrl = new URL(page.url);
+
+		newUrl.searchParams.set('source', selected);
+
+		invalidate('app:source').then(() => {
+			goto(newUrl.toString(), {
+				keepFocus: true,
+				noScroll: true,
+				invalidateAll: true
+			});
+		});
 	}
 
 	const sourceOptions = [

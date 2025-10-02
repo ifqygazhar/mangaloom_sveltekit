@@ -2,40 +2,6 @@ import { derived } from 'svelte/store';
 import { sourceStore } from '$lib/stores/sourceStore';
 import { SourceType } from '$lib/config/sourceType';
 
-import { API_KEY, URI } from '$env/static/private';
-
-let baseUrlCache: string | null = null;
-export const apiKey = API_KEY;
-
-export async function getBaseUrl(): Promise<string> {
-	if (baseUrlCache) {
-		return baseUrlCache;
-	}
-
-	try {
-		const response = await fetch(URI);
-		if (!response.ok) {
-			throw new Error(`Failed to load config: ${response.status}`);
-		}
-
-		const configData = await response.text();
-		const lines = configData.split('\n');
-
-		for (const line of lines) {
-			if (line.startsWith('newmain=')) {
-				baseUrlCache = line.substring('newmain='.length).trim();
-				console.log('Base URL fetched:', baseUrlCache);
-				return baseUrlCache;
-			}
-		}
-
-		throw new Error('Base URL not found in config');
-	} catch (e) {
-		console.error('Error fetching base URL:', e);
-		return '';
-	}
-}
-
 export class Endpoint {
 	private sourceType: SourceType;
 
