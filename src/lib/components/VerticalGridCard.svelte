@@ -25,7 +25,7 @@
 </script>
 
 <a href={item.href} class="group block">
-	<div class="relative overflow-hidden rounded-md bg-gray-900">
+	<div class="relative overflow-hidden bg-gray-900">
 		<!-- Gambar dengan aspect ratio konsisten -->
 		<div class="aspect-[3/4] w-full overflow-hidden bg-gray-800">
 			<LazyImage
@@ -49,7 +49,7 @@
 		<!-- Flag kanan atas -->
 		{#if getFlagSrc(item.type)}
 			<div
-				class="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 border-black bg-white shadow md:h-7 md:w-7"
+				class="bg-transparant absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center overflow-hidden shadow md:h-8 md:w-8"
 				title={item.type ?? 'Unknown'}
 			>
 				<img

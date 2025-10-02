@@ -57,7 +57,7 @@
 								<!-- Flag kanan atas berdasarkan item.type -->
 								{#if getFlagSrc(item.type)}
 									<div
-										class="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border-2 border-black bg-white shadow md:h-8 md:w-8"
+										class="bg-transparant absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center overflow-hidden shadow md:h-8 md:w-8"
 										title={item.type ?? 'Unknown'}
 									>
 										<img
