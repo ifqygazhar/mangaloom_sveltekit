@@ -17,7 +17,9 @@
 		isOpen?: boolean;
 		selected?: SourceType;
 	}>();
-	let isDetail = $derived(page.url.pathname.startsWith('/detail/'));
+	let isDetail = $derived(
+		page.url.pathname.startsWith('/detail/') || page.url.pathname.startsWith('/read/')
+	);
 
 	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
 	onDestroy(() => unsubscribe());
