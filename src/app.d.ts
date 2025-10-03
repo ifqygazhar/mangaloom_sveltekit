@@ -8,7 +8,9 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 		interface LayoutData {
-			baseUrl: string;
+			seo: {
+				title: string;
+			};
 		}
 	}
 }

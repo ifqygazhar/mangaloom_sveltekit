@@ -17,6 +17,7 @@
 		isOpen?: boolean;
 		selected?: SourceType;
 	}>();
+	let isDetail = $derived(page.url.pathname.startsWith('/detail/'));
 
 	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
 	onDestroy(() => unsubscribe());
@@ -135,17 +136,19 @@
 				<span class="text-white lg:hidden">History</span>
 			</button>
 
-			<select
-				id="source-select"
-				bind:value={selected}
-				onchange={onSourceChange}
-				class="w-full rounded-md border border-gray-600 bg-[#1E1E1E] px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
-				aria-label="Pilih sumber"
-			>
-				{#each sourceOptions as opt (opt.value)}
-					<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
-				{/each}
-			</select>
+			{#if !isDetail}
+				<select
+					id="source-select"
+					bind:value={selected}
+					onchange={onSourceChange}
+					class="w-full rounded-md border border-gray-600 bg-[#1E1E1E] px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
+					aria-label="Pilih sumber"
+				>
+					{#each sourceOptions as opt (opt.value)}
+						<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
+					{/each}
+				</select>
+			{/if}
 
 			<button
 				type="button"

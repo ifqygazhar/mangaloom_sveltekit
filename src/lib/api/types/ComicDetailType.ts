@@ -1,5 +1,5 @@
-import { type ChapterItemType } from './ChapterItemType';
-import { type GenreItemType } from './GenreItemType';
+import { parseChapterItemFromJson, type ChapterItemType } from './ChapterItemType';
+import { parseGenreItemFromJson, type GenreItemType } from './GenreItemType';
 
 export type ComicDetailType = {
 	title: string;
@@ -17,8 +17,17 @@ export type ComicDetailType = {
 };
 
 export function parseComicDetailFromJson(json: any): ComicDetailType {
-	const genres = Array.isArray(json.genre) ? json.genre : [];
-	const chapters = Array.isArray(json.chapter) ? json.chapter : [];
+	let genres: GenreItemType[] = [];
+	genres = json.genre.map((item: GenreItemType) => {
+		console.log('Parsing genre item:', item);
+		return parseGenreItemFromJson(item);
+	});
+
+	let chapters: ChapterItemType[] = [];
+	chapters = json.chapter.map((item: ChapterItemType) => {
+		console.log('Parsing chapter item:', item);
+		return parseChapterItemFromJson(item);
+	});
 	return {
 		title: json.title || '',
 		altTitle: json.altTitle || '',

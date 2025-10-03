@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import '@fontsource-variable/dm-sans';
 
 	import NavLeft from '$lib/components/NavLeft.svelte';
 	import NavRight from '$lib/components/NavRight.svelte';

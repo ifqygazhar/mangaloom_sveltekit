@@ -10,6 +10,7 @@
 	import Autoplay from 'embla-carousel-autoplay';
 	import shuffle from '$lib/utils/shuffleitem';
 	import type { CarouselAPI } from './ui/carousel/context';
+	import { resolve } from '$app/paths';
 
 	let { items = [], count = 4 } = $props<{
 		items?: ComicItemType[];
@@ -65,6 +66,7 @@
 	>
 		<CarouselContent class="h-full">
 			{#each slides as item (item.href)}
+				{@const cleanHref = item.href.slice(1, -1)}
 				<CarouselItem class="h-full w-full">
 					<div class="flex h-full items-center justify-between gap-4 p-4 text-white">
 						<div class="flex flex-col gap-2">
@@ -89,9 +91,10 @@
 									<span class="text-[0.8rem] md:text-[1rem]">{item.chapter}</span>
 								</div>
 							</div>
+
 							<a
 								data-sveltekit-preload-data="tap"
-								href={item.href}
+								href={resolve('/detail/[href]', { href: cleanHref })}
 								class="group mt-2 flex w-fit cursor-pointer flex-row items-center justify-center gap-2 rounded-md bg-primary p-2 px-4 transition-colors duration-200 hover:bg-primary/80"
 								aria-label="Baca"
 							>

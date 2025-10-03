@@ -6,9 +6,6 @@
 	let { data } = $props<{ data: PageData }>();
 </script>
 
-<svelte:head>
-	<title>Pencarian: {data.query || 'Cari Komik'}</title>
-</svelte:head>
 {#if data.comics.length == 0}
 	<div
 		class="flex h-[calc(100vh-10rem)] flex-col items-center justify-center space-y-4 px-4 text-center"

@@ -15,6 +15,7 @@
 	import { get } from 'svelte/store';
 	import { SourceType } from '$lib/config/sourceType';
 	import { onDestroy } from 'svelte';
+	import { resolve } from '$app/paths';
 	let { items = [], isPopuler = false } = $props<{
 		items?: ComicItemType[];
 		isPopuler?: boolean;
@@ -35,9 +36,10 @@
 	>
 		<CarouselContent class="-ml-2 md:-ml-4">
 			{#each items as item, i (item.href)}
+				{@const cleanHref = item.href.slice(1, -1)}
 				<CarouselItem class="basis-1/2 sm:basis-1/3 lg:basis-1/5 md:basis-1/4 xl:basis-1/6">
 					<div class="px-4">
-						<a href={item.href} class="group">
+						<a href={resolve('/detail/[href]', { href: cleanHref })} class="group">
 							<div class="relative aspect-[3/4] overflow-hidden">
 								<LazyImage
 									src={item.thumbnail}
