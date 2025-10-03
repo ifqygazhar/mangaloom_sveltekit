@@ -1,51 +1,61 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import GeneralVerticalComic from '$lib/components/GeneralVerticalComic.svelte';
-	import type { PageData } from './$types';
+	import type { PageData, PageProps } from './$types';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import LoadingDot from '$lib/components/LoadingDot.svelte';
 
-	export let data: PageData;
+	type PaginationProps = {
+		form: PageProps;
+		data: PageData;
+	};
+	let { form, data }: PaginationProps = $props();
 
-	let items = data.newKomik;
-	let source = data.source;
-	let hasMore = data.hasMore;
-	let loading = false;
-	let page = 1; // Halaman saat ini (halaman 1 sudah dimuat)
+	let items = $state(data.newKomik);
+	let source = $state(data.source);
+	let hasMore = $state(data.hasMore);
+	let loading = $state(false);
+	let page = $state(1);
 
-	let sentinel: HTMLDivElement;
+	let sentinel = $state<HTMLDivElement | undefined>();
+	let formElement = $state<HTMLFormElement | undefined>();
 
-	async function loadMoreItems() {
-		if (loading || !hasMore) return;
-
-		loading = true;
-		page++;
-
-		try {
-			const res = await fetch(`/api/newcomic?page=${page}&source=${source}`);
-			const newData = await res.json();
-
-			if (res.ok && newData.comics.length > 0) {
-				items = [...items, ...newData.comics];
-				hasMore = newData.hasMore;
-			} else {
-				hasMore = false;
-			}
-		} catch (e) {
-			console.error('Gagal memuat komik selanjutnya:', e);
-			hasMore = false;
-		} finally {
-			loading = false;
+	$effect(() => {
+		if (data.source !== source) {
+			items = data.newKomik;
+			source = data.source;
+			hasMore = data.hasMore;
+			page = 1;
 		}
-	}
+	});
+
+	const handleSubmit: SubmitFunction = () => {
+		loading = true;
+
+		return async ({ result, update }) => {
+			if (result.type === 'success' && result.data) {
+				const { comics, hasMore: newHasMore } = result.data;
+				if (comics.length > 0) {
+					items = [...items, ...comics];
+				}
+				hasMore = newHasMore;
+				page++;
+			}
+			loading = false;
+			await update();
+		};
+	};
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0].isIntersecting) {
-					loadMoreItems();
+				if (entries[0].isIntersecting && !loading && hasMore) {
+					formElement?.requestSubmit();
 				}
 			},
 			{
-				rootMargin: '200px'
+				rootMargin: '0px'
 			}
 		);
 
@@ -62,15 +72,26 @@
 </script>
 
 <GeneralVerticalComic
-	title="Semua Komik 📖"
+	title="Semua Komik 🤩"
 	shortdesc="Jelajahi koleksi lengkap komik kami"
 	{items}
 />
 
 {#if hasMore}
-	<div bind:this={sentinel} class="flex h-[3.1rem] w-full items-center justify-center">
+	<div bind:this={sentinel} class="">
+		<form
+			bind:this={formElement}
+			method="POST"
+			action="?/loadMore"
+			use:enhance={handleSubmit}
+			class="hidden"
+		>
+			<input type="hidden" name="page" value={page + 1} />
+			<input type="hidden" name="source" value={source} />
+		</form>
+
 		{#if loading}
-			<p class="text-white">Memuat lebih banyak...</p>
+			<LoadingDot />
 		{/if}
 	</div>
 {/if}

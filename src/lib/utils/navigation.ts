@@ -19,7 +19,7 @@ export const links: NavLink[] = [
 	{ href: '/', label: 'Beranda', id: 1, icon: Home },
 	{ href: '/terbaru', label: 'Terbaru', id: 2, icon: Clock },
 	{ href: '/daftar-komik', label: 'Daftar Komik', id: 3, icon: List },
-	{ href: '/genre', label: 'Genre', id: 4, icon: Tags }
+	{ href: '/genres', label: 'Genre', id: 4, icon: Tags }
 ];
 
 export function isActive(pathname: string, href: string) {

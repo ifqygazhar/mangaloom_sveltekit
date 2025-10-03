@@ -10,10 +10,8 @@
 	import { goto, invalidate } from '$app/navigation';
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
-	import { Star } from '@lucide/svelte';
 	import type { ComicItemType } from '$lib/api/types/ComicItemType';
 
-	// State untuk pencarian
 	let searchQuery = $state('');
 	let searchResults = $state<ComicItemType[]>([]);
 	let isLoading = $state(false);
@@ -28,12 +26,6 @@
 	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
 	onDestroy(() => unsubscribe());
 
-	// Fungsi untuk menutup hasil pencarian saat klik di luar
-	function closeSearchResults() {
-		showResults = false;
-	}
-
-	// Fungsi untuk mengambil hasil pencarian dengan debouncing
 	async function fetchSearchResults(query: string) {
 		if (!query.trim()) {
 			searchResults = [];
@@ -45,7 +37,6 @@
 		showResults = true;
 
 		try {
-			// Ambil source dari store atau props
 			const source = selected || SourceType.V3;
 			const response = await fetch(
 				`/api/search?query=${encodeURIComponent(query)}&source=${source}`
@@ -65,26 +56,21 @@
 		}
 	}
 
-	// Efek untuk debouncing - DIPERBAIKI
 	$effect(() => {
-		// Clear timeout sebelumnya
 		if (searchTimeout) {
 			clearTimeout(searchTimeout);
 		}
 
-		// Set timeout baru
 		if (searchQuery.trim()) {
 			searchTimeout = setTimeout(() => {
 				fetchSearchResults(searchQuery);
 			}, 500);
 		} else {
-			// Reset jika query kosong
 			searchResults = [];
 			showResults = false;
 		}
 	});
 
-	// Cleanup saat component destroyed
 	onDestroy(() => {
 		if (searchTimeout) {
 			clearTimeout(searchTimeout);

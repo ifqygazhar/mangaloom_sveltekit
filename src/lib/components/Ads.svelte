@@ -5,6 +5,7 @@
 		title?: string;
 		btnText?: string;
 		url?: string;
+		icon?: any;
 	}>();
 
 	function openExternal() {
@@ -16,7 +17,7 @@
 	<div class="flex w-full flex-row gap-2 border-2 border-primary p-4">
 		<img src={logo} alt="Mangaloom logo" class="h-16 w-16" />
 		<div class="flex-flex col gap-2">
-			<h2 class="mb-1 text-[0.8rem] font-bold text-white md:text-[1rem] lg:text-[1rem]">
+			<h2 class="mb-1 text-[0.8rem] font-bold text-white lg:text-[1rem] md:text-[1rem]">
 				{title}
 			</h2>
 			<button class="cursor-pointer" onclick={openExternal}
@@ -26,7 +27,7 @@
 					{#if icon != null}
 						{@render icon?.()}
 					{/if}
-					<h2 class="text-[0.8rem] text-black md:text-[1rem] md:text-white lg:text-[1rem]">
+					<h2 class="text-[0.8rem] text-black lg:text-[1rem] md:text-[1rem] md:text-white">
 						{btnText}
 					</h2>
 				</div></button

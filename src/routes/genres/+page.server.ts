@@ -15,8 +15,9 @@ export async function load({ fetch, url }) {
 		const genresFetch = await fetch(`${baseUrl}${endpointInstance.genreComic}`, {
 			headers: header
 		});
+		// console.log('genresFetch object:', genresFetch);
 		const komik = await safeJsonParse<GenreItemType>(genresFetch);
-
+		// console.log('genres:', komik);
 		return {
 			genres: komik,
 			source: source

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { GenreItemType } from '$lib/api/types/GenreItemType';
+
 	import { getGenreEmoji } from '$lib/utils/getEmojiGenre';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let genres: GenreItemType[] = data.genres;
+
+	$: genres = data.genres;
 </script>
 
 <div class="mb-2 flex w-screen flex-col">
@@ -20,8 +21,9 @@
 	<div class="px-4 pb-6">
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:grid-cols-4 xl:grid-cols-6">
 			{#each genres as item (item.href)}
+				{@const cleanHref = item.href.slice(1, -1)}
 				<a
-					href={resolve('/genre/[href]', { href: item.href })}
+					href={resolve('/genre/[href]', { href: cleanHref })}
 					class="relative flex min-h-[100px] flex-col items-center justify-center rounded-lg bg-slate-800 p-4 text-center transition-transform duration-300 hover:scale-105 hover:bg-slate-700"
 				>
 					<span class="text-3xl lg:text-4xl">{getGenreEmoji(item.title)}</span>

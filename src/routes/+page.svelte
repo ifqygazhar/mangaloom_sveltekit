@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 
 	import Ads from '$lib/components/Ads.svelte';
@@ -109,7 +108,7 @@
 	<div class="p-4">
 		<a
 			data-sveltekit-preload-data="tap"
-			href="/all"
+			href={resolve('/all')}
 			class="group flex w-full cursor-pointer flex-row items-center justify-center gap-2 border-2 border-primary bg-primary p-2 md:bg-transparent md:hover:bg-primary"
 			aria-label="Lihat Semua Komik"
 		>

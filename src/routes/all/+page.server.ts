@@ -4,6 +4,7 @@ import { SourceType } from '$lib/config/sourceType';
 import { Endpoint } from '$lib/utils/endpoint';
 import { header } from '$lib/utils/header';
 import { safeJsonParse } from '$lib/utils/safeJsonParse.js';
+import { json, type Actions } from '@sveltejs/kit';
 
 export async function load({ fetch, url }) {
 	try {
@@ -32,3 +33,33 @@ export async function load({ fetch, url }) {
 		};
 	}
 }
+
+export const actions: Actions = {
+	loadMore: async ({ request }) => {
+		const formData = await request.formData();
+		const page = Number(formData.get('page'));
+		const source = formData.get('source') as SourceType;
+
+		try {
+			const endpointInstance = new Endpoint({ sourceType: source });
+			const baseUrl = URI;
+
+			const response = await fetch(`${baseUrl}${endpointInstance.newComic(page)}`, {
+				headers: header // <-- API Key Rahasia digunakan di sini, di server
+			});
+
+			if (!response.ok) {
+				return json({ comics: [], hasMore: false });
+			}
+
+			const comics = await safeJsonParse<ComicItemType>(response);
+			const hasMore = comics.length > 0;
+
+			// Kembalikan hanya data yang baru
+			return { comics, hasMore };
+		} catch (e) {
+			console.error('Error fetching more comics:', e);
+			return { comics: [], hasMore: false };
+		}
+	}
+};
