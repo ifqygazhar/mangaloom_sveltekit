@@ -310,10 +310,3 @@
 		{/if}
 	</div>
 {/if}
-
-<style>
-	.select:focus {
-		outline: 2px solid hsl(var(--p));
-		outline-offset: 2px;
-	}
-</style>
