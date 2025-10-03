@@ -87,6 +87,18 @@
 		isPopuler={false}
 	/>
 
+	<div class="p-4">
+		<a
+			data-sveltekit-preload-data="tap"
+			href={resolve('/terbaru')}
+			class="group flex w-full cursor-pointer flex-row items-center justify-center gap-2 border-2 border-primary bg-primary p-2 md:bg-transparent md:hover:bg-primary"
+			aria-label="Komik Terbaru"
+		>
+			<Book class="h-5 w-5 text-black md:text-white md:group-hover:text-black" />
+			<h3 class="text-black md:text-white md:group-hover:text-black">Lihat Komik Terbaru</h3>
+		</a>
+	</div>
+
 	<GeneralHorizontalComic
 		items={shuffle(comedy)}
 		title="Komedi Acumalaka 😂"
