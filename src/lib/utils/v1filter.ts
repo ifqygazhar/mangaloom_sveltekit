@@ -1,0 +1,60 @@
+export const v1Genre = [
+	'4-Koma',
+	'Action',
+	'Adventure',
+	'Comedy',
+	'Cooking',
+	'Demons',
+	'Drama',
+	'Ecchi',
+	'Fantasy',
+	'Game',
+	'Gender Bender',
+	'Gore',
+	'Harem',
+	'Historical',
+	'Horror',
+	'Isekai',
+	'Josei',
+	'Magic',
+	'Martial Arts',
+	'Mature',
+	'Mecha',
+	'Medical',
+	'Military',
+	'Music',
+	'Mystery',
+	'One-Shot',
+	'Police',
+	'Psychological',
+	'Reincarnation',
+	'Romance',
+	'School',
+	'School Life',
+	'Sci-Fi',
+	'Seinen',
+	'Shoujo',
+	'Shoujo Ai',
+	'Shounen',
+	'Shounen Ai',
+	'Slice of Life',
+	'Sports',
+	'Super Power',
+	'Supernatural',
+	'Thriller',
+	'Tragedy',
+	'Vampire',
+	'Webtoons',
+	'Yuri'
+];
+
+export const v1Type = ['Manga', 'Manhwa', 'Manhua'];
+
+export const v1Status = ['Ongoing', 'Completed'];
+
+export const v1Order: Record<string, string> = {
+	'A-Z': 'titleasc',
+	'Z-A': 'titledesc',
+	Update: 'update',
+	Popular: 'popular'
+};
