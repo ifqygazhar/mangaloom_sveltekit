@@ -9,6 +9,7 @@ import { error as svelteKitError } from '@sveltejs/kit';
 type LoadOutput = {
 	error: string | undefined;
 	comicDetail: ComicDetailType | undefined;
+	detailHref: string;
 };
 
 export async function load({ fetch, url, params }): Promise<LoadOutput> {
@@ -35,13 +36,15 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 
 		return {
 			error: undefined,
-			comicDetail: comicDetail
+			comicDetail: comicDetail,
+			detailHref: href
 		};
 	} catch (e) {
 		console.error('Error in +page.server.load:', e);
 		return {
 			error: 'Gagal memuat data komik detail dari server. Silakan coba lagi nanti.',
-			comicDetail: undefined
+			comicDetail: undefined,
+			detailHref: href
 		};
 	}
 }

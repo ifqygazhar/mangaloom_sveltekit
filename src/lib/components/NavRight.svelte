@@ -143,8 +143,20 @@
 					id="source-select"
 					bind:value={selected}
 					onchange={onSourceChange}
-					class="w-full rounded-md border border-gray-600 bg-[#1E1E1E] px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
+					class="w-full rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
 					aria-label="Pilih sumber"
+				>
+					{#each sourceOptions as opt (opt.value)}
+						<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
+					{/each}
+				</select>
+			{:else}
+				<select
+					id="source-select"
+					bind:value={selected}
+					class="w-full cursor-not-allowed rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-grey lg:w-auto lg:py-1"
+					aria-label="Sumber (read-only)"
+					disabled
 				>
 					{#each sourceOptions as opt (opt.value)}
 						<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>

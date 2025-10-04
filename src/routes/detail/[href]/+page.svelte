@@ -3,17 +3,25 @@
 	import Eye from '@lucide/svelte/icons/eye';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { get } from 'svelte/store';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { SourceType } from '$lib/config/sourceType';
-	import Bookmark from '@lucide/svelte/icons/bookmark';
 	import Book from '@lucide/svelte/icons/book';
 	import type { GenreItemType } from '$lib/api/types/GenreItemType';
 	import type { ChapterItemType } from '$lib/api/types/ChapterItemType.js';
 	import { resolve } from '$app/paths';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import BtnBookmark from '$lib/components/BtnBookmark.svelte';
+	import {
+		addOrUpdateBookmark,
+		deleteBookmark,
+		getBookmark,
+		type BookmarkedKomik
+	} from '$lib/db/database';
 
 	let { data } = $props();
 	const { comicDetail } = data;
+
+	let isBookmarked = $state(false);
 
 	const firstChapter: ChapterItemType = comicDetail.chapter[comicDetail.chapter.length - 1];
 	const lastChapter: ChapterItemType = comicDetail.chapter[0];
@@ -32,6 +40,38 @@
 	const thumbnail: string = comicDetail.thumbnail;
 	const chapters: ChapterItemType[] = comicDetail.chapter;
 	const altTitle: string = comicDetail.altTitle;
+	const detailHref: string = data.detailHref;
+
+	onMount(async () => {
+		if (detailHref === '') return;
+		const existingBookmark = await getBookmark(detailHref, currentSource);
+		isBookmarked = !!existingBookmark;
+	});
+
+	async function handleBookmark() {
+		if (!comicDetail) return;
+
+		const bookmarkData: BookmarkedKomik = {
+			title: comicDetail.title,
+			href: detailHref,
+			thumbnail: comicDetail.thumbnail,
+			type: comicDetail.type,
+			chapter: detailHref,
+			rating: comicDetail.rating,
+			genre: comicDetail.genre.map((g) => g.title).join(', '),
+			year: comicDetail.released,
+			sourceType: currentSource,
+			bookmarkedAt: new Date()
+		};
+
+		if (isBookmarked) {
+			await deleteBookmark(bookmarkData.href, bookmarkData.sourceType);
+		} else {
+			await addOrUpdateBookmark(bookmarkData);
+		}
+
+		isBookmarked = !isBookmarked;
+	}
 
 	let currentSource = $state(get(sourceStore));
 	const unsub = sourceStore.subscribe((v) => (currentSource = v));
@@ -65,22 +105,17 @@
 							<p class="font-bold text-white">{rating}</p>
 						</div>
 					</div>
-					<button
-						class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20 md:w-[30.5rem]"
-					>
-						<Bookmark class="h-5 w-5" />
-						<span>Bookmark</span>
-					</button>
+					<BtnBookmark {isBookmarked} onBookmark={handleBookmark} />
 					<div class="flex flex-col justify-start gap-2 md:flex-row">
 						<a
-							href={resolve('/read/[href]', { href: cleanFirstChapterHref })}
+							href={`/read/${cleanFirstChapterHref}?detailHref=${detailHref}`}
 							class="group hover:aria-2 flex items-center justify-center gap-2 rounded-md bg-primary p-2 hover:border-2 hover:border-primary hover:bg-transparent md:w-[15rem]"
 						>
 							<Book class="h-5 w-5 text-black group-hover:text-white" />
 							<span class="text-black group-hover:text-white">Chapter Pertama</span>
 						</a>
 						<a
-							href={resolve('/read/[href]', { href: cleanLastChapterHref })}
+							href={`/read/${cleanFirstChapterHref}?detailHref=${detailHref}`}
 							class="group hover:aria-2 flex items-center justify-center gap-2 rounded-md bg-red-500 p-2 hover:border-2 hover:border-red-500 hover:bg-transparent md:w-[15rem]"
 						>
 							<Book class="h-5 w-5 text-black group-hover:text-white" />
@@ -123,7 +158,7 @@
 				{#each chapters as item (item.href)}
 					{@const cleanHref = item.href.slice(1, -1)}
 					<a
-						href={resolve('/read/[href]', { href: cleanHref })}
+						href={`/read/${cleanHref}?detailHref=${detailHref}`}
 						class="hover:aria-2 flex cursor-pointer items-center gap-2 rounded-md bg-third p-2 hover:border-2 hover:border-primary"
 					>
 						<Book class="h-5 w-5 text-neutral-300" />

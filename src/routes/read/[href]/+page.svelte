@@ -14,19 +14,20 @@
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
 	let { data } = $props();
-	const { comicRead } = $derived(data);
+	const { comicRead, chapterList, detailHref, currentChapterHref } = $derived(data);
 
 	let mode = $state<'scroll' | 'swipe'>('scroll');
 	let isFullscreen = $state(false);
-	let fullscreenContainer: HTMLDivElement;
+	let fullscreenContainer = $state<HTMLDivElement>();
 
 	const comicPages = $derived(comicRead?.panel ?? ['']);
 	const title = $derived(comicRead?.title ?? 'Judul Komik');
-	const prev = $derived(comicRead?.prev.slice(1, -1) ?? '#');
-	const next = $derived(comicRead?.next.slice(1, -1) ?? '#');
+	const prev = $derived(`${comicRead?.prev.slice(1, -1) ?? '#'}?detailHref=${detailHref}`);
+	const next = $derived(`${comicRead?.next.slice(1, -1) ?? '#'}?detailHref=${detailHref}`);
+
 	function switchToSwipeMode() {
 		mode = 'swipe';
-		// Request fullscreen after state has updated
+
 		setTimeout(() => fullscreenContainer?.requestFullscreen(), 0);
 	}
 
@@ -64,6 +65,9 @@
 				{next}
 				onSwitchToSwipe={switchToSwipeMode}
 				onToggleFullscreen={toggleFullscreen}
+				chapterList={chapterList ?? []}
+				{currentChapterHref}
+				{detailHref}
 			/>
 		{/if}
 
@@ -91,6 +95,9 @@
 							{next}
 							onSwitchToSwipe={switchToSwipeMode}
 							onToggleFullscreen={toggleFullscreen}
+							chapterList={chapterList ?? []}
+							{currentChapterHref}
+							{detailHref}
 						/>
 					{/if}
 				</div>
