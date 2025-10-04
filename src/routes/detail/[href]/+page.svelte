@@ -15,37 +15,47 @@
 		addOrUpdateBookmark,
 		deleteBookmark,
 		getBookmark,
+		getHistoryForKomik,
 		type BookmarkedKomik
 	} from '$lib/db/database';
 
 	let { data } = $props();
-	const { comicDetail } = data;
+	const { comicDetail } = $derived(data);
 
 	let isBookmarked = $state(false);
+	let readChapters = $state(new Set<string>());
 
-	const firstChapter: ChapterItemType = comicDetail.chapter[comicDetail.chapter.length - 1];
-	const lastChapter: ChapterItemType = comicDetail.chapter[0];
+	const firstChapter = $derived(comicDetail?.chapter[comicDetail.chapter.length - 1]);
+	const lastChapter = $derived(comicDetail?.chapter[0]);
 
-	const cleanFirstChapterHref = firstChapter.href.slice(1, -1);
-	const cleanLastChapterHref = lastChapter.href.slice(1, -1);
+	const cleanFirstChapterHref = $derived(firstChapter?.href.slice(1, -1) ?? '');
+	const cleanLastChapterHref = $derived(lastChapter?.href.slice(1, -1) ?? '');
 
-	const title: string = comicDetail.title;
-	const description: string = comicDetail.description;
-	const author: string = comicDetail.author;
-	const status: string = comicDetail.status;
-	const type: string = comicDetail.type;
-	const released: string = comicDetail.released;
-	const rating: string = comicDetail.rating;
-	const genre: GenreItemType[] = comicDetail.genre;
-	const thumbnail: string = comicDetail.thumbnail;
-	const chapters: ChapterItemType[] = comicDetail.chapter;
-	const altTitle: string = comicDetail.altTitle;
+	const title = $derived(comicDetail?.title ?? 'Judul Komik');
+	const description = $derived(comicDetail?.description ?? 'Tidak ada deskripsi.');
+	const author = $derived(comicDetail?.author ?? '-');
+	const status = $derived(comicDetail?.status ?? '-');
+	const type = $derived(comicDetail?.type ?? '-');
+	const released = $derived(comicDetail?.released ?? '-');
+	const rating = $derived(comicDetail?.rating ?? '0');
+	const genre = $derived(comicDetail?.genre ?? []);
+	const thumbnail = $derived(comicDetail?.thumbnail ?? '');
+	const chapters = $derived(comicDetail?.chapter ?? []);
+	const altTitle = $derived(comicDetail?.altTitle ?? '');
 	const detailHref: string = data.detailHref;
 
 	onMount(async () => {
 		if (detailHref === '') return;
+
 		const existingBookmark = await getBookmark(detailHref, currentSource);
 		isBookmarked = !!existingBookmark;
+
+		const historyRecords = await getHistoryForKomik(detailHref, currentSource);
+		console.log(
+			'Riwayat Href dari DB:',
+			historyRecords.map((r) => r.href)
+		);
+		readChapters = new Set(historyRecords.map((record) => record.href));
 	});
 
 	async function handleBookmark() {
@@ -157,14 +167,20 @@
 			<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 md:grid-cols-4">
 				{#each chapters as item (item.href)}
 					{@const cleanHref = item.href.slice(1, -1)}
+					{@const isRead = readChapters.has(item.href.slice(1, -1))}
+
 					<a
 						href={`/read/${cleanHref}?detailHref=${detailHref}`}
-						class="hover:aria-2 flex cursor-pointer items-center gap-2 rounded-md bg-third p-2 hover:border-2 hover:border-primary"
+						class="hover:aria-2 flex cursor-pointer items-center gap-2 rounded-md border-2 bg-third p-2 hover:border-2 hover:border-primary"
+						class:border-green-500={isRead}
+						class:border-transparent={!isRead}
 					>
 						<Book class="h-5 w-5 text-neutral-300" />
 						<div class="flex flex-col justify-start">
-							<span class="text-neutral-300">{item.title}</span>
-							<span class="h text-neutral-300">{item.date}</span>
+							<span class="text-neutral-300" class:!text-green-500={isRead}>
+								{item.title}
+							</span>
+							<span class="text-neutral-300">{item.date}</span>
 						</div>
 					</a>
 				{/each}
