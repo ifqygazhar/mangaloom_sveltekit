@@ -41,7 +41,7 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 	} catch (e) {
 		console.error('Error in +page.server.load:', e);
 		return {
-			error: 'Gagal memuat data genres dari server. Silakan coba lagi nanti.',
+			error: 'Gagal memuat data chapter dari server. Silakan coba lagi nanti.',
 			comicRead: undefined
 		};
 	}
