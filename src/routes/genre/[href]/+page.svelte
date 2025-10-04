@@ -4,6 +4,7 @@
 	import type { PageData, PageProps, SubmitFunction } from './$types';
 	import { enhance } from '$app/forms';
 	import LoadingDot from '$lib/components/LoadingDot.svelte';
+	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
 	type PaginationProps = {
 		form: PageProps;
@@ -70,28 +71,32 @@
 	});
 </script>
 
-<GeneralVerticalComic
-	title={`Genre ${data.genre} 🎭`}
-	shortdesc={`Nikmatin genre ${data.genre}`}
-	{items}
-/>
+{#if data.error}
+	<ErrorDisplay message={data.error} />
+{:else}
+	<GeneralVerticalComic
+		title={`Genre ${data.genre} 🎭`}
+		shortdesc={`Nikmatin genre ${data.genre}`}
+		{items}
+	/>
 
-{#if hasMore}
-	<div bind:this={sentinel} class="">
-		<form
-			bind:this={formElement}
-			method="POST"
-			action="?/loadMore"
-			use:enhance={handleSubmit}
-			class="hidden"
-		>
-			<input type="hidden" name="page" value={page + 1} />
-			<input type="hidden" name="source" value={source} />
-			<input type="hidden" name="genre" value={data.genre} />
-		</form>
+	{#if hasMore}
+		<div bind:this={sentinel} class="">
+			<form
+				bind:this={formElement}
+				method="POST"
+				action="?/loadMore"
+				use:enhance={handleSubmit}
+				class="hidden"
+			>
+				<input type="hidden" name="page" value={page + 1} />
+				<input type="hidden" name="source" value={source} />
+				<input type="hidden" name="genre" value={data.genre} />
+			</form>
 
-		{#if loading}
-			<LoadingDot />
-		{/if}
-	</div>
+			{#if loading}
+				<LoadingDot />
+			{/if}
+		</div>
+	{/if}
 {/if}

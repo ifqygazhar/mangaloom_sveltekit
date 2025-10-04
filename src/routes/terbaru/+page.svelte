@@ -5,6 +5,7 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import LoadingDot from '$lib/components/LoadingDot.svelte';
+	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 
 	type PaginationProps = {
 		form: PageProps;
@@ -71,27 +72,31 @@
 	});
 </script>
 
-<GeneralVerticalComic
-	title="Semua Komik 🤩"
-	shortdesc="Jelajahi koleksi lengkap komik kami"
-	{items}
-/>
+{#if data.error}
+	<ErrorDisplay message={data.error} />
+{:else}
+	<GeneralVerticalComic
+		title="Semua Komik 🤩"
+		shortdesc="Jelajahi koleksi lengkap komik kami"
+		{items}
+	/>
 
-{#if hasMore}
-	<div bind:this={sentinel} class="">
-		<form
-			bind:this={formElement}
-			method="POST"
-			action="?/loadMore"
-			use:enhance={handleSubmit}
-			class="hidden"
-		>
-			<input type="hidden" name="page" value={page + 1} />
-			<input type="hidden" name="source" value={source} />
-		</form>
+	{#if hasMore}
+		<div bind:this={sentinel} class="">
+			<form
+				bind:this={formElement}
+				method="POST"
+				action="?/loadMore"
+				use:enhance={handleSubmit}
+				class="hidden"
+			>
+				<input type="hidden" name="page" value={page + 1} />
+				<input type="hidden" name="source" value={source} />
+			</form>
 
-		{#if loading}
-			<LoadingDot />
-		{/if}
-	</div>
+			{#if loading}
+				<LoadingDot />
+			{/if}
+		</div>
+	{/if}
 {/if}
