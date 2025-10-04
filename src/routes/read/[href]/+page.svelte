@@ -14,19 +14,19 @@
 		CarouselNext,
 		CarouselPrevious
 	} from '$lib/components/ui/carousel';
-	import { resolve } from '$app/paths';
+	import LazyImage from '$lib/components/LazyImage.svelte';
 
 	let { data } = $props();
-	const { comicRead } = data;
+	const { comicRead } = $derived(data);
 
 	let mode = $state<'scroll' | 'swipe'>('scroll');
 	let isFullscreen = $state(false);
 	let fullscreenContainer: HTMLDivElement;
 
-	const comicPages = comicRead?.panel ?? [''];
-	const title = comicRead?.title ?? 'Judul Komik';
-	const prev = comicRead?.prev.slice(1, -1) ?? '#';
-	const next = comicRead?.next.slice(1, -1) ?? '#';
+	const comicPages = $derived(comicRead?.panel ?? ['']);
+	const title = $derived(comicRead?.title ?? 'Judul Komik');
+	const prev = $derived(comicRead?.prev.slice(1, -1) ?? '#');
+	const next = $derived(comicRead?.next.slice(1, -1) ?? '#');
 
 	function switchToSwipeMode() {
 		mode = 'swipe';
@@ -65,7 +65,7 @@
 				secara gratis dengan kualitas gambar terbaik. Baca manga, manhwa, dan manhu dalam bahasa Indonesia
 				hanya di Mangaloom.
 			</p>
-			<h2 class="font-bold text-white md:text-[1.5rem]">{title}</h2>
+			<h2 class="max-w-4xl text-center font-bold text-white md:text-[1.5rem]">{title}</h2>
 			<div class="flex flex-col gap-2">
 				<div class="flex gap-2">
 					<button class="group flex cursor-pointer items-center gap-2 rounded-md bg-primary p-2">
@@ -134,12 +134,10 @@
 						class:lg:mx-auto={!isFullscreen}
 						class:lg:max-w-4xl={!isFullscreen}
 					>
-						<img
+						<LazyImage
 							src={item}
-							alt="Comic Page"
-							class="w-full max-w-full object-cover"
-							class:object-contain={isFullscreen}
-							class:object-cover={!isFullscreen}
+							alt={`${title} - ${item}`}
+							class={`w-full max-w-full ${isFullscreen ? 'object-contain' : 'object-cover'}`}
 						/>
 					</div>
 				{/each}
