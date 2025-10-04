@@ -26,6 +26,7 @@
 		currentChapterHref: string;
 		detailHref: string;
 	}>();
+	console.log('prev :', prev);
 </script>
 
 <div class="flex flex-col items-center gap-2 p-4">
@@ -61,30 +62,52 @@
 		<ChapterSelect chapters={chapterList} currentHref={currentChapterHref} {detailHref} />
 
 		<div class="flex w-full gap-2">
-			<a
-				href={prev}
-				class:pointer-events-none={prev === '#'}
-				class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md p-2"
-				class:bg-secondary={prev !== '#'}
-				class:hover:bg-primary={prev !== '#'}
-				class:bg-gray-600={prev === '#'}
-				class:cursor-not-allowed={prev === '#'}
-			>
-				<ArrowBigLeft class="h-4 w-4 text-white group-hover:text-black" />
-				<span class="text-sm font-bold text-white group-hover:text-black">Prev</span>
-			</a>
-			<a
-				href={next}
-				class:pointer-events-none={next === '#'}
-				class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md p-2"
-				class:bg-secondary={next !== '#'}
-				class:hover:bg-primary={next !== '#'}
-				class:bg-gray-600={next === '#'}
-				class:cursor-not-allowed={next === '#'}
-			>
-				<ArrowBigRight class="h-4 w-4 text-white group-hover:text-black" />
-				<span class="text-sm font-bold text-white group-hover:text-black">Next</span>
-			</a>
+			{#if prev === '#' || prev === ''}
+				<div
+					class="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md p-2"
+					class:bg-secondary={prev !== '#' || prev === ''}
+					class:hover:bg-primary={prev !== '#' || prev === ''}
+					class:bg-gray-600={prev === '#'}
+					class:cursor-not-allowed={prev === '#' || prev === ''}
+				>
+					<span class="text-sm font-bold text-white group-hover:text-black">Chapter Awal</span>
+				</div>
+			{:else}
+				<a
+					href={prev}
+					class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md p-2"
+					class:bg-secondary={prev !== '#' || prev === ''}
+					class:hover:bg-primary={prev !== '#' || prev === ''}
+					class:bg-gray-600={prev === '#'}
+					class:cursor-not-allowed={prev === '#' || prev === ''}
+				>
+					<ArrowBigLeft class="h-4 w-4 text-white group-hover:text-black" />
+					<span class="text-sm font-bold text-white group-hover:text-black">Prev</span>
+				</a>
+			{/if}
+			{#if next === '#' || next === ''}
+				<div
+					class="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md p-2"
+					class:bg-secondary={next !== '#' || next === ''}
+					class:hover:bg-primary={next !== '#' || next === ''}
+					class:bg-gray-600={next === '#'}
+					class:cursor-not-allowed={next === '#' || next === ''}
+				>
+					<span class="text-sm font-bold text-white group-hover:text-black">Chapter Akhir</span>
+				</div>
+			{:else}
+				<a
+					href={next}
+					class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md p-2"
+					class:bg-secondary={next !== '#' || next === ''}
+					class:hover:bg-primary={next !== '#' || next === ''}
+					class:bg-gray-600={next === '#'}
+					class:cursor-not-allowed={next === '#' || next === ''}
+				>
+					<ArrowBigRight class="h-4 w-4 text-white group-hover:text-black" />
+					<span class="text-sm font-bold text-white group-hover:text-black">Next</span>
+				</a>
+			{/if}
 		</div>
 	</div>
 </div>

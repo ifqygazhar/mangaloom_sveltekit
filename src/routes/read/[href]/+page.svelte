@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	// Hapus impor ikon yang sudah dipindah ke ReaderControls
 	import Shrink from '@lucide/svelte/icons/shrink';
 	import {
@@ -12,6 +12,9 @@
 	import LazyImage from '$lib/components/LazyImage.svelte';
 	import ReaderControls from '$lib/components/ReaderControl.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import { sourceStore } from '$lib/stores/sourceStore.js';
+	import { get } from 'svelte/store';
+	import { addOrUpdateHistory, type ChapterHistory } from '$lib/db/database';
 
 	let { data } = $props();
 	const { comicRead, chapterList, detailHref, currentChapterHref } = $derived(data);
@@ -22,8 +25,12 @@
 
 	const comicPages = $derived(comicRead?.panel ?? ['']);
 	const title = $derived(comicRead?.title ?? 'Judul Komik');
-	const prev = $derived(`${comicRead?.prev.slice(1, -1) ?? '#'}?detailHref=${detailHref}`);
-	const next = $derived(`${comicRead?.next.slice(1, -1) ?? '#'}?detailHref=${detailHref}`);
+	const prev = $derived(
+		`${comicRead?.prev.slice(1, -1) !== '' ? `${comicRead?.prev.slice(1, -1) ?? '#'}?detailHref=${detailHref}` : '#'}`
+	);
+	const next = $derived(
+		`${comicRead?.next.slice(1, -1) !== '' ? `${comicRead?.next.slice(1, -1) ?? '#'}?detailHref=${detailHref}` : '#'}`
+	);
 
 	function switchToSwipeMode() {
 		mode = 'swipe';
@@ -46,12 +53,55 @@
 		}
 	}
 
+	function titleToSlug(title: string): string {
+		if (!title) return '';
+		return title
+			.toLowerCase()
+			.replace(/\s+/g, '-')
+			.replace(/[^\w-]+/g, '');
+	}
+
+	$effect(() => {
+		// Pastikan semua data yang dibutuhkan sudah ada
+		if (!comicRead || !detailHref || !chapterList || chapterList.length === 0) {
+			return;
+		}
+
+		// Cari data chapter lengkap dari chapterList untuk mendapatkan 'date'
+		const fullChapterData = chapterList.find((ch) => ch.href === titleToSlug(comicRead.title));
+
+		// Buat objek riwayat yang akan disimpan
+		const historyData: ChapterHistory = {
+			title: comicRead.title,
+			href: titleToSlug(comicRead.title),
+			date: fullChapterData?.date ?? '',
+			isHasBeenRead: true,
+			downloadUrl: '',
+			komikHref: detailHref,
+			sourceType: currentSource,
+			readAt: new Date()
+		};
+
+		// Panggil fungsi untuk menyimpan ke IndexedDB
+		addOrUpdateHistory(historyData)
+			.then(() => {
+				console.log(`Riwayat untuk chapter "${historyData.title}" disimpan/diperbarui.`);
+			})
+			.catch((err) => {
+				console.error('Gagal menyimpan riwayat chapter:', err);
+			});
+	});
+
 	onMount(() => {
 		document.addEventListener('fullscreenchange', handleFullscreenChange);
 		return () => {
 			document.removeEventListener('fullscreenchange', handleFullscreenChange);
 		};
 	});
+
+	let currentSource = $state(get(sourceStore));
+	const unsub = sourceStore.subscribe((v) => (currentSource = v));
+	onDestroy(() => unsub());
 </script>
 
 {#if data.error}

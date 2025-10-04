@@ -36,7 +36,7 @@
 
 	{#if isOpen}
 		<div
-			class="absolute bottom-full z-20 mb-2 max-h-72 w-full cursor-pointer overflow-y-auto rounded-md border border-white/10 bg-secondary p-1 shadow-lg"
+			class="absolute top-full z-20 mt-2 max-h-72 w-full cursor-pointer overflow-y-auto rounded-md border border-white/10 bg-secondary p-1 shadow-lg"
 		>
 			<ul class="flex flex-col gap-1">
 				{#each chapters as chapter (chapter.href)}

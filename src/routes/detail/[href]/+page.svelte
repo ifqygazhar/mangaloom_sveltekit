@@ -115,7 +115,7 @@
 							<span class="text-black group-hover:text-white">Chapter Pertama</span>
 						</a>
 						<a
-							href={`/read/${cleanFirstChapterHref}?detailHref=${detailHref}`}
+							href={`/read/${cleanLastChapterHref}?detailHref=${detailHref}`}
 							class="group hover:aria-2 flex items-center justify-center gap-2 rounded-md bg-red-500 p-2 hover:border-2 hover:border-red-500 hover:bg-transparent md:w-[15rem]"
 						>
 							<Book class="h-5 w-5 text-black group-hover:text-white" />
