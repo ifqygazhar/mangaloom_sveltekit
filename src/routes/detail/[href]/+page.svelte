@@ -21,6 +21,10 @@
 
 	let isBookmarked = $state(false);
 	let readChapters = $state(new Set<string>());
+	let searchQuery = $state('');
+	const filteredChapters = $derived(
+		chapters.filter((chapter) => chapter.title.toLowerCase().includes(searchQuery.toLowerCase()))
+	);
 
 	const firstChapter = $derived(comicDetail?.chapter[comicDetail.chapter.length - 1]);
 	const lastChapter = $derived(comicDetail?.chapter[0]);
@@ -166,8 +170,16 @@
 		</div>
 		<div class="flex flex-col gap-2 rounded-md bg-secondary p-2">
 			<h3 class="text-[1.3rem] font-bold text-white">Chapter</h3>
+
+			<input
+				type="text"
+				placeholder="Cari chapter..."
+				bind:value={searchQuery}
+				class="w-full rounded-md border-2 border-transparent bg-third p-2 text-white placeholder-neutral-400 focus:border-primary focus:outline-none"
+			/>
+
 			<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 md:grid-cols-4">
-				{#each chapters as item (item.href)}
+				{#each filteredChapters as item (item.href)}
 					{@const cleanHref = item.href.slice(1, -1)}
 					{@const isRead = readChapters.has(item.href.slice(1, -1))}
 
@@ -185,6 +197,10 @@
 							<span class="text-neutral-300">{item.date}</span>
 						</div>
 					</a>
+				{:else}
+					<div class="col-span-full flex h-24 items-center justify-center">
+						<p class="italic text-neutral-400">Chapter tidak ditemukan.</p>
+					</div>
 				{/each}
 			</div>
 		</div>
