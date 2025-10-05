@@ -4,5 +4,13 @@ import { enhancedImages } from '@sveltejs/enhanced-img';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [enhancedImages(), tailwindcss(), sveltekit()]
+	plugins: [enhancedImages(), tailwindcss(), sveltekit()],
+	preview: {
+		host: true,
+		port: 3000,
+		allowedHosts: [
+			'mangaloom.app',
+			'www.mangaloom.app'
+		]
+	}
 });
