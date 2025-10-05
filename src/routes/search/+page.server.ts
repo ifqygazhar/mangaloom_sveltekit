@@ -9,7 +9,7 @@ import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const query = url.searchParams.get('query') || '';
-	const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
+	const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
 
 	if (!query) {
 		return { comics: [], query: '' };
@@ -39,7 +39,7 @@ export const actions = {
 	search: async ({ request }) => {
 		const formData = await request.formData();
 		const query = formData.get('query')?.toString() || '';
-		const source = (formData.get('source')?.toString() as SourceType) || SourceType.V3;
+		const source = (formData.get('source')?.toString() as SourceType) || SourceType.V5;
 
 		if (!query.trim()) {
 			return fail(400, {

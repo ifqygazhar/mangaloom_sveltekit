@@ -8,7 +8,7 @@ import { json, type Actions } from '@sveltejs/kit';
 
 export async function load({ fetch, url }) {
 	try {
-		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
+		const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;
