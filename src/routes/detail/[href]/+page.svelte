@@ -2,8 +2,7 @@
 	import Star from '@lucide/svelte/icons/star';
 	import Eye from '@lucide/svelte/icons/eye';
 	import { sourceStore } from '$lib/stores/sourceStore';
-	import { get } from 'svelte/store';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { SourceType } from '$lib/config/sourceType';
 	import Book from '@lucide/svelte/icons/book';
 	import { resolve } from '$app/paths';
@@ -42,6 +41,9 @@
 	const altTitle = $derived(comicDetail?.altTitle ?? '');
 	const detailHref: string = data.detailHref;
 
+	const currentSource = $derived($sourceStore);
+	const hasGenre = $derived(genre.length > 0);
+
 	onMount(async () => {
 		if (detailHref === '') return;
 
@@ -66,7 +68,7 @@
 			type: comicDetail.type,
 			chapter: lastChapter?.title ?? 'N/A',
 			rating: comicDetail.rating,
-			genre: comicDetail.genre.map((g) => g.title).join(', '),
+			genre: comicDetail.genre.map((g) => g.title).join(', ') || 'Unknown',
 			year: comicDetail.released,
 			sourceType: currentSource,
 			bookmarkedAt: new Date()
@@ -80,8 +82,6 @@
 
 		isBookmarked = !isBookmarked;
 	}
-
-	let currentSource = $derived($sourceStore);
 </script>
 
 {#if data.error}
@@ -146,16 +146,22 @@
 			</div>
 			<div class="flex w-full flex-col gap-1 rounded-md bg-secondary p-2">
 				<h3 class="text-[1.3rem] font-bold text-white">Genre</h3>
-				<div class=" grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 md:grid-cols-4">
-					{#each genre as item (item.href)}
-						{@const cleanHref = item.href.slice(1, -1)}
-						<a
-							href={resolve('/genre/[href]', { href: cleanHref })}
-							class="hover:aria-2 cursor-pointer rounded-md bg-third p-3 font-bold text-neutral-300 hover:bg-primary hover:text-black"
-							>{item.title}</a
-						>
-					{/each}
-				</div>
+				{#if hasGenre}
+					<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 md:grid-cols-4">
+						{#each genre as item (item.href)}
+							{@const cleanHref = item.href.slice(1, -1)}
+							<a
+								href={resolve('/genre/[href]', { href: cleanHref })}
+								class="hover:aria-2 cursor-pointer rounded-md bg-third p-3 font-bold text-neutral-300 hover:bg-primary hover:text-black"
+								>{item.title}</a
+							>
+						{/each}
+					</div>
+				{:else}
+					<div class="flex items-center justify-center py-4">
+						<p class="text-neutral-400 italic">Genre tidak tersedia</p>
+					</div>
+				{/if}
 			</div>
 		</div>
 		<div class="flex flex-col gap-2 rounded-md bg-secondary p-2">

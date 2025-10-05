@@ -6,9 +6,8 @@
 	import Trash2 from '@lucide/svelte/icons/trash-2';
 	import LazyImage from './LazyImage.svelte';
 	import { sourceStore } from '$lib/stores/sourceStore';
-	import { get } from 'svelte/store';
 	import { SourceType } from '$lib/config/sourceType';
-	import { onDestroy, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import { resolve } from '$app/paths';
 
 	let {
@@ -24,7 +23,7 @@
 	}>();
 
 	const currentSource = $derived($sourceStore);
-	const cleanHref = item.href.slice(1, -1);
+	const cleanHref = isBookmark ? item.href : item.href.slice(1, -1);
 
 	const detailUrl = $derived(
 		`${resolve('/detail/[href]', { href: cleanHref })}?source=${currentSource}`

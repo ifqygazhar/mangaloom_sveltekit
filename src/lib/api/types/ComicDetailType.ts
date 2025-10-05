@@ -18,10 +18,11 @@ export type ComicDetailType = {
 
 export function parseComicDetailFromJson(json: any): ComicDetailType {
 	let genres: GenreItemType[] = [];
-	genres = json.genre.map((item: GenreItemType) => {
-		// console.log('Parsing genre item:', item);
-		return parseGenreItemFromJson(item);
-	});
+	if (Array.isArray(json.genre) && json.genre.length > 0) {
+		genres = json.genre.map((item: GenreItemType) => {
+			return parseGenreItemFromJson(item);
+		});
+	}
 
 	let chapters: ChapterItemType[] = [];
 	chapters = json.chapter.map((item: ChapterItemType) => {

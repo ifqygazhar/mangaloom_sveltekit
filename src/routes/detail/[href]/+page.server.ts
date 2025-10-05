@@ -14,6 +14,8 @@ type LoadOutput = {
 
 export async function load({ fetch, url, params }): Promise<LoadOutput> {
 	const href = `/${params.href}`;
+	const originalHref = params.href;
+
 	try {
 		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const endpointInstance = new Endpoint({ sourceType: source });
@@ -37,14 +39,14 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 		return {
 			error: undefined,
 			comicDetail: comicDetail,
-			detailHref: href
+			detailHref: originalHref
 		};
 	} catch (e) {
 		console.error('Error in +page.server.load:', e);
 		return {
 			error: 'Gagal memuat data komik detail dari server. Silakan coba lagi nanti.',
 			comicDetail: undefined,
-			detailHref: href
+			detailHref: originalHref
 		};
 	}
 }
