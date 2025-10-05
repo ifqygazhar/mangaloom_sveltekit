@@ -6,8 +6,6 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { SourceType } from '$lib/config/sourceType';
 	import Book from '@lucide/svelte/icons/book';
-	import type { GenreItemType } from '$lib/api/types/GenreItemType';
-	import type { ChapterItemType } from '$lib/api/types/ChapterItemType.js';
 	import { resolve } from '$app/paths';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import BtnBookmark from '$lib/components/BtnBookmark.svelte';
