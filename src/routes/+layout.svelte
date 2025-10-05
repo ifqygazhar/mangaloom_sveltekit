@@ -146,5 +146,11 @@
 		<span role="img" aria-label="orange heart" class="mx-1 text-orange-400">🧡</span>
 		oleh Team Mangaloom
 	</p>
-	<p class="mb-1">&copy; {year} Mangaloom</p>
+	<div class="mt-2 text-sm text-gray-400">
+		<a href="/dmca" class="transition hover:text-primary hover:underline">DMCA</a>
+		<span class="mx-2">|</span>
+		<a href="/privacy-policy" class="transition hover:text-primary hover:underline"
+			>Privacy Policy</a
+		>
+	</div>
 </footer>
