@@ -25,10 +25,19 @@ export function parseComicDetailFromJson(json: any): ComicDetailType {
 	}
 
 	let chapters: ChapterItemType[] = [];
-	chapters = json.chapter.map((item: ChapterItemType) => {
-		// console.log('Parsing chapter item:', item);
-		return parseChapterItemFromJson(item);
-	});
+	if (Array.isArray(json.chapter)) {
+		const rawChapters = json.chapter.map((item: ChapterItemType) => {
+			return parseChapterItemFromJson(item);
+		});
+
+		const uniqueChaptersMap = new Map<string, ChapterItemType>();
+		for (const chapter of rawChapters) {
+			if (!uniqueChaptersMap.has(chapter.href)) {
+				uniqueChaptersMap.set(chapter.href, chapter);
+			}
+		}
+		chapters = Array.from(uniqueChaptersMap.values());
+	}
 	return {
 		title: json.title || '',
 		altTitle: json.altTitle || '',

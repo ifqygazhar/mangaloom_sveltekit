@@ -31,27 +31,43 @@
 		goto(searchUrl);
 	}
 
-	function onSourceChange(e: Event) {
+	async function onSourceChange(e: Event) {
 		const target = e.target as HTMLSelectElement;
 		const newSource = target.value as SourceType;
 
-		sourceStore.set(newSource);
-
-		if (newSource === SourceType.V2) {
-			sourceStore.set(SourceType.V3);
+		// Skip jika source yang dipilih sama dengan current source
+		if (newSource === selected) {
 			return;
 		}
 
+		// Block V2 (maintenance)
+		if (newSource === SourceType.V2) {
+			// Reset kembali ke source sebelumnya
+			target.value = selected;
+			alert('Source V2 sedang dalam maintenance. Silakan pilih source lain.');
+			return;
+		}
+
+		// Update store DULU sebelum navigation
+		sourceStore.set(newSource);
+
+		// Buat URL baru dengan source parameter
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('source', newSource);
 
-		invalidate('app:source').then(() => {
-			goto(newUrl.toString(), {
+		// Navigate dengan invalidate
+		try {
+			await invalidate('app:source');
+			await goto(newUrl.toString(), {
 				keepFocus: true,
 				noScroll: true,
 				invalidateAll: true
 			});
-		});
+		} catch (err) {
+			console.error('Error switching source:', err);
+			// Rollback store jika gagal
+			sourceStore.set(selected);
+		}
 	}
 
 	const sourceOptions = [
@@ -146,11 +162,13 @@
 					id="source-select"
 					value={selected}
 					onchange={onSourceChange}
-					class="w-full rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
+					class="w-full cursor-pointer rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
 					aria-label="Pilih sumber"
 				>
 					{#each sourceOptions as opt (opt.value)}
-						<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
+						<option class="cursor-pointer" value={opt.value} disabled={opt.disabled}
+							>{opt.label}</option
+						>
 					{/each}
 				</select>
 			{:else}

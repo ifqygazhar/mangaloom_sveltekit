@@ -18,7 +18,7 @@ type LoadOutput = {
 
 export async function load({ fetch, url, params }): Promise<LoadOutput> {
 	const currentChapterHref = `/${params.href}`;
-	const detailHref = url.searchParams.get('detailHref');
+	const detailHref = `/${url.searchParams.get('detailHref')}`;
 
 	if (!detailHref) {
 		return {
@@ -51,6 +51,9 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 			readResponsePromise,
 			detailResponsePromise
 		]);
+
+		console.log('detail uri fetch:', detailResponse.url);
+		console.log('read uri fetch:', readResponse.url);
 
 		if (!readResponse.ok) {
 			throw svelteKitError(

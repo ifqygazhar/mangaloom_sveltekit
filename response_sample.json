@@ -1,43 +1,65 @@
 {
 	"status": 200,
-	"message": "success",
+	"message": "OK",
 	"data": {
-		"href": "",
-		"title": "Reincarnation of the Murim Clan’s Former Ranker Bahasa Indonesia",
-		"altTitle": "무림세가 전생랭커",
-		"thumbnail": "https://komikcast.li/wp-content/uploads/2023/06/former.jpeg",
-		"description": "Pada suatu hari, ada seorang ranker SSS bernama Gang Tae menantang guild terkuat bernama Griffin! Kerennya, dia menantang guild tersebut seorang diri. Sayangnya, dia malah menemui ajalnya setelah pertarungan yang sengit nan menegangkan tersebut. Namun, dia kaget ketika membuka matanya… Karena dia ternyata be-reinkarnasi di masa murim sebagai orang yang bernama Yu Shin Un. Penampilannya gendut bagai babi, sehingga dia makin kaget karena harus be-reinkarnasi dengan tubuh enggak ideal. Terlebih ada rumor-rumor tak sedap, macam dianggap sebagai orang yang jahat dari klan Baek Un. Sehingga situasi yang sekacau itu memaksanya untuk tidak beristirahat. Karena jika dia lengah sedikit saja, mungkin dia akan kembali di bunuh?! Hanya saja, jika dia orang biasa tentunya akan mudah terbunuh. Sayang seribu sayang, dia adalah necromancy dari kehidupan sebelumnya. Sementara pada kehidupan sekarang, dia mampu beladiri. Sehingga dia memiliki kedua kekuatan yang jika digabungkan mungkin akan mengguncang takdir dari dunia yang dia tempati sekarang!",
-		"status": "Ongoing",
-		"type": "Manhwa",
-		"released": "2021",
-		"author": "",
-		"updatedOn": "October 3, 2025",
-		"rating": "7.50",
+		"altTitle": "Kara Yonca, Noir Clover, Schwarzer Klee, Trevo Negro, Trébol Negro, Trifoglio Nero, Trifoiul Negru, Черный клевер, कालो तीनपाते विरुवा, 블랙 클로버, ブラッククローバー, 黑色五叶草",
+		"author": "TABATA Yuuki",
+		"chapter": [
+			{
+				"date": "Agustus 11, 2025",
+				"href": "/black-clover-chapter-383/",
+				"title": "Chapter 383"
+			},
+			{
+				"date": "Agustus 11, 2025",
+				"href": "/black-clover-chapter-382/",
+				"title": "Chapter 382"
+			},
+			{
+				"date": "Agustus 11, 2025",
+				"href": "/black-clover-chapter-381/",
+				"title": "Chapter 381"
+			}
+		],
+		"description": "Asta dan Yuno ditinggalkan bersama di gereja yang sama, dan tidak terpisahkan sejak saat itu. Sebagai anak-anak, mereka berjanji bahwa mereka akan bersaing satu sama lain untuk melihat siapa yang akan menjadi Kaisar Sihir berikutnya. Namun, saat mereka dewasa, beberapa perbedaan di antara mereka menjadi jelas. Yuno adalah seorang jenius dengan sihir, dengan kekuatan dan kontrol yang luar biasa, sedangkan Asta tidak dapat menggunakan sihir sama sekali, dan mencoba untuk menebus kekurangannya dengan melatih secara fisik. Ketika mereka menerima Grimoires pada usia 15 tahun, Yuno mendapatkan buku spektakuler dengan semanggi berdaun empat (kebanyakan orang menerima semanggi berdaun tiga), sementara Asta tidak menerima apa-apa. Namun, ketika Yuno diancam, kebenaran tentang kekuatan Asta terungkap, dia menerima Grimoire semanggi lima daun, “semanggi hitam”! Sekarang kedua sahabat itu sedang menuju dunia, keduanya mencari tujuan yang sama!",
 		"genre": [
 			{
 				"title": "Action",
-				"href": "/genres/action/"
+				"href": "/action/"
 			},
 			{
 				"title": "Adventure",
-				"href": "/genres/adventure/"
+				"href": "/adventure/"
+			},
+			{
+				"title": "Comedy",
+				"href": "/comedy/"
+			},
+			{
+				"title": "Drama",
+				"href": "/drama/"
+			},
+			{
+				"title": "Fantasy",
+				"href": "/fantasy/"
 			},
 			{
 				"title": "Shounen",
-				"href": "/genres/shounen/"
-			}
-		],
-		"chapter": [
-			{
-				"title": "Chapter 170",
-				"href": "/reincarnation-of-the-murim-clans-former-ranker-chapter-170-bahasa-indonesia/",
-				"date": "6 seconds ago"
+				"href": "/shounen/"
 			},
 			{
-				"title": "Chapter 169",
-				"href": "/reincarnation-of-the-murim-clans-former-ranker-chapter-169-bahasa-indonesia/",
-				"date": "22 hours ago"
+				"title": "Supernatural",
+				"href": "/supernatural/"
 			}
-		]
+		],
+		"href": "black-clover",
+		"latest_chapter": "Chapter 383",
+		"rating": "8.7",
+		"released": "2014",
+		"status": "Ongoing",
+		"thumbnail": "https://i0.wp.com/lc3.cosmicscans.asia/wp-content/uploads/2024/11/Black-Clove.webp",
+		"title": "Black Clover",
+		"type": "Manga",
+		"updatedOn": "2025-08-11T23:05:19+07:00"
 	}
 }

@@ -8,6 +8,9 @@
 	import NavRight from '$lib/components/NavRight.svelte';
 	import BottomNav from '$lib/components/BottomNav.svelte';
 	import LoadingBar from '$lib/components/LoadingBar.svelte';
+	import { SourceType } from '$lib/config/sourceType';
+	import { sourceStore } from '$lib/stores/sourceStore';
+	import { page } from '$app/state';
 
 	let { children } = $props();
 	const year: number = new Date().getFullYear();
@@ -16,6 +19,10 @@
 
 	onMount(() => {
 		// Logika untuk screen size (tetap sama)
+		const urlSource = page.url.searchParams.get('source') as SourceType;
+		if (urlSource && Object.values(SourceType).includes(urlSource)) {
+			sourceStore.set(urlSource);
+		}
 		const desktopBreakpoint = 1280;
 		const checkScreenSize = () => {
 			isDesktop = window.innerWidth >= desktopBreakpoint;
@@ -28,6 +35,14 @@
 		};
 	});
 	$effect(() => {
+		const urlSource = page.url.searchParams.get('source') as SourceType;
+		if (urlSource && Object.values(SourceType).includes(urlSource)) {
+			const currentSource = $sourceStore;
+			if (urlSource !== currentSource) {
+				sourceStore.set(urlSource);
+			}
+		}
+
 		const scriptId = 'cid0020000420380444667';
 		const existingScript = document.getElementById(scriptId);
 

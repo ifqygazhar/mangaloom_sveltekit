@@ -25,7 +25,8 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 		const response = await fetch(`${baseUrl}${endpointInstance.detailComic(href)}`, {
 			headers: header
 		});
-		console.log('fetch url :', response.url);
+		// console.log('fetch url :', response.url);
+		// console.log('API Response Status:', response.status, response.statusText);
 		if (!response.ok) {
 			throw svelteKitError(response.status, 'Gagal mengambil detail komik');
 		}

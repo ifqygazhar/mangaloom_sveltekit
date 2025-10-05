@@ -13,7 +13,6 @@
 	import ReaderControls from '$lib/components/ReaderControl.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import { sourceStore } from '$lib/stores/sourceStore.js';
-	import { get } from 'svelte/store';
 	import { addOrUpdateHistory, type ChapterHistory } from '$lib/db/database';
 
 	let { data } = $props();
