@@ -87,7 +87,7 @@
 		isPopuler={false}
 	/>
 
-	<div class="p-4">
+	<div class="w-full p-4">
 		<a
 			data-sveltekit-preload-data="tap"
 			href={resolve('/terbaru')}
@@ -117,7 +117,7 @@
 		shortdesc="Komik yang bikin kamu panas dingin le"
 	/>
 
-	<div class="p-4">
+	<div class="w-full p-4">
 		<a
 			data-sveltekit-preload-data="tap"
 			href={resolve('/all')}

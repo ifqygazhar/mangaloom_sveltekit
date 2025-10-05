@@ -134,13 +134,13 @@
 	<NavRight />
 </header>
 
-<main class="">
+<main class="flex flex-1 flex-col items-center">
 	<LoadingBar />
 	{@render children?.()}
 </main>
 <BottomNav />
 
-<footer class="mt-auto bg-secondary pt-2 pb-22 text-center text-white lg:p-4">
+<footer class="relative bottom-0 mt-auto bg-secondary pt-2 pb-22 text-center text-white lg:p-4">
 	<p class="mb-1">
 		Dibuat dengan
 		<span role="img" aria-label="orange heart" class="mx-1 text-orange-400">🧡</span>

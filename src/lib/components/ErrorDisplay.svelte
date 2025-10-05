@@ -72,7 +72,7 @@
 </script>
 
 <div
-	class="flex h-[calc(100vh-10rem)] flex-col items-center justify-center gap-4 p-4 text-center"
+	class="flex flex-1 flex-col items-center justify-center gap-4 p-4 text-center"
 	role="alert"
 	aria-live="polite"
 >

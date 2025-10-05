@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="p-4">
+<div class="w-full p-4">
 	<div class="flex w-full flex-row gap-2 border-2 border-primary p-4">
 		<img src={logo} alt="Mangaloom logo" class="h-16 w-16" />
 		<div class="flex-flex col gap-2">

@@ -49,7 +49,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-4 p-4">
+<div class="flex w-full flex-col gap-4 p-4">
 	<h1 class="flex items-center gap-2 text-2xl font-bold text-white">
 		<History class="h-7 w-7" />
 		Riwayat Baca
@@ -64,7 +64,7 @@
 		/>
 	{/if}
 
-	<div class="flex flex-col gap-3">
+	<div class="flex w-full flex-col gap-3">
 		{#each filteredHistory as item ([item.href, item.sourceType])}
 			{@const cleanKomikHref = item.komikHref.replace(/^\/|\/$/g, '')}
 			{@const readUrl = `/read/${item.href}?detailHref=${cleanKomikHref}&source=${item.sourceType}`}
@@ -89,7 +89,7 @@
 
 				<button
 					onclick={() => handleDelete(item)}
-					class="flex-shrink-0 rounded-full p-2 text-neutral-400 transition-colors hover:bg-red-500/20 hover:text-red-400"
+					class="flex-shrink-0 cursor-pointer rounded-full p-2 text-neutral-400 transition-colors hover:bg-red-500/20 hover:text-red-400"
 					title="Hapus riwayat"
 				>
 					<Trash2 class="h-5 w-5" />
