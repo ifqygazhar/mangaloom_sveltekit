@@ -64,7 +64,7 @@
 			href: detailHref,
 			thumbnail: comicDetail.thumbnail,
 			type: comicDetail.type,
-			chapter: detailHref,
+			chapter: lastChapter?.title ?? 'N/A',
 			rating: comicDetail.rating,
 			genre: comicDetail.genre.map((g) => g.title).join(', '),
 			year: comicDetail.released,

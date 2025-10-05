@@ -1,6 +1,7 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
 	import { useCurrentPath, links, isActive } from '$lib/utils/navigation';
+	import { resolve } from '$app/paths';
 	const currentPath = useCurrentPath();
 </script>
 
@@ -14,7 +15,7 @@
 			{#each links as link (link.id)}
 				<li>
 					<a
-						href={link.href}
+						href={resolve(link.href)}
 						class={`nav-link flex h-full items-center rounded px-3 py-2 transition-colors ${
 							isActive($currentPath, link.href)
 								? 'bg-primary text-black'

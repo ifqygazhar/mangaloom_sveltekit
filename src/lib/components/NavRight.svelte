@@ -10,6 +10,7 @@
 	import { goto, invalidate } from '$app/navigation';
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
+	import { resolve } from '$app/paths';
 
 	let searchQuery = $state('');
 
@@ -118,25 +119,25 @@
         lg:w-auto lg:flex-row lg:items-center lg:gap-2 lg:bg-transparent lg:p-0 lg:shadow-none
       "
 		>
-			<button
-				type="button"
+			<a
+				href={resolve('/bookmark')}
 				aria-label="Bookmark"
 				title="Bookmark"
 				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
 			>
 				<Bookmark class="h-5 w-5 text-white group-hover:text-black" />
 				<span class="text-white lg:hidden">Bookmark</span>
-			</button>
+			</a>
 
-			<button
-				type="button"
+			<a
+				href={resolve('/history')}
 				aria-label="History"
 				title="History"
 				class="group flex w-full cursor-pointer items-center gap-3 rounded p-2 hover:bg-primary lg:inline-flex lg:w-auto lg:p-2"
 			>
 				<History class="h-5 w-5 text-white group-hover:text-black" />
 				<span class="text-white lg:hidden">History</span>
-			</button>
+			</a>
 
 			{#if !isDetail}
 				<select
