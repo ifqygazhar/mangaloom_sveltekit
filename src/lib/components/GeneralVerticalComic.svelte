@@ -26,7 +26,7 @@
 
 	<div class="px-4 pb-6">
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:grid-cols-4 xl:grid-cols-6">
-			{#each items as item, i (item.href)}
+			{#each items as item, i ([item.href, item.sourceType])}
 				<VerticalGridCard {item} index={i} {isPopuler} {isBookmark} on:delete />
 			{/each}
 		</div>

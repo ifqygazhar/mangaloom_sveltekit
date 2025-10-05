@@ -9,6 +9,7 @@
 	import { SourceType } from '$lib/config/sourceType';
 	import { createEventDispatcher } from 'svelte';
 	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
 
 	let {
 		item,
@@ -58,10 +59,32 @@
 				return sourceType.toUpperCase();
 		}
 	}
+	async function handleNavigate(e: MouseEvent) {
+		// Hanya jalankan logika ini untuk bookmark
+		if (isBookmark) {
+			e.preventDefault(); // Mencegah navigasi default dari tag <a>
+
+			// 1. Set source aktif di store sesuai dengan source bookmark
+			if (item.sourceType) {
+				$sourceStore = item.sourceType;
+			}
+
+			// 2. Buat URL tujuan yang benar
+			const destinationUrl = `${resolve('/detail/[href]', { href: cleanHref })}?source=${item.sourceType}`;
+
+			// 3. Arahkan pengguna ke URL tersebut
+			await goto(destinationUrl);
+		}
+	}
 </script>
 
 <div class="group relative block">
-	<a href={detailUrl} class="block">
+	<a
+		href={isBookmark
+			? `${resolve('/detail/[href]', { href: cleanHref })}?source=${item.sourceType}`
+			: `${resolve('/detail/[href]', { href: cleanHref })}?source=${currentSource}`}
+		class="block"
+	>
 		<div class="relative overflow-hidden bg-gray-900">
 			<!-- Gambar dengan aspect ratio konsisten -->
 			<div class="aspect-[3/4] w-full overflow-hidden bg-gray-800">
