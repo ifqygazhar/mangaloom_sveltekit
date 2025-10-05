@@ -10,8 +10,10 @@
 	import Menu from '@lucide/svelte/icons/menu';
 	import X from '@lucide/svelte/icons/x';
 	import { resolve } from '$app/paths';
+	import DownloadModal from './DownloadModal.svelte';
 
 	let searchQuery = $state('');
+	let modalOpen = $state(false);
 
 	let { isOpen = false } = $props<{
 		isOpen?: boolean;
@@ -93,6 +95,7 @@
 	}
 </script>
 
+<DownloadModal bind:isOpen={modalOpen} />
 <div class="flex items-center gap-3">
 	<div class="relative w-full max-w-xs flex-1 sm:max-w-md lg:w-80 lg:flex-none">
 		<form onsubmit={handleSearch} role="search" class="relative">
@@ -187,6 +190,7 @@
 
 			<button
 				type="button"
+				onclick={() => (modalOpen = true)}
 				aria-label="Download"
 				title="Download"
 				class="group flex w-full cursor-pointer items-center gap-2 rounded-md border-2 border-primary bg-transparent p-2 transition-colors hover:bg-primary focus:ring-2 focus:outline-none"
