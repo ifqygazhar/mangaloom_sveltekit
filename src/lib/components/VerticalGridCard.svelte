@@ -23,10 +23,12 @@
 		isBookmark?: boolean;
 	}>();
 
-	let currentSource = $state(get(sourceStore));
-	const unsub = sourceStore.subscribe((v) => (currentSource = v));
-	onDestroy(() => unsub());
+	const currentSource = $derived($sourceStore);
 	const cleanHref = item.href.slice(1, -1);
+
+	const detailUrl = $derived(
+		`${resolve('/detail/[href]', { href: cleanHref })}?source=${currentSource}`
+	);
 
 	const dispatch = createEventDispatcher();
 
@@ -60,7 +62,7 @@
 </script>
 
 <div class="group relative block">
-	<a href={resolve('/detail/[href]', { href: cleanHref })} class="block">
+	<a href={detailUrl} class="block">
 		<div class="relative overflow-hidden bg-gray-900">
 			<!-- Gambar dengan aspect ratio konsisten -->
 			<div class="aspect-[3/4] w-full overflow-hidden bg-gray-800">

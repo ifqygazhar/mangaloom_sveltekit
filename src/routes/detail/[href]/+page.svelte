@@ -81,9 +81,7 @@
 		isBookmarked = !isBookmarked;
 	}
 
-	let currentSource = $state(get(sourceStore));
-	const unsub = sourceStore.subscribe((v) => (currentSource = v));
-	onDestroy(() => unsub());
+	let currentSource = $derived($sourceStore);
 </script>
 
 {#if data.error}
@@ -116,14 +114,14 @@
 					<BtnBookmark {isBookmarked} onBookmark={handleBookmark} />
 					<div class="flex flex-col justify-start gap-2 md:flex-row">
 						<a
-							href={`/read/${cleanFirstChapterHref}?detailHref=${detailHref}`}
+							href={`/read/${cleanFirstChapterHref}?detailHref=${detailHref}&source=${currentSource}`}
 							class="group hover:aria-2 flex items-center justify-center gap-2 rounded-md bg-primary p-2 hover:border-2 hover:border-primary hover:bg-transparent md:w-[15rem]"
 						>
 							<Book class="h-5 w-5 text-black group-hover:text-white" />
 							<span class="text-black group-hover:text-white">Chapter Pertama</span>
 						</a>
 						<a
-							href={`/read/${cleanLastChapterHref}?detailHref=${detailHref}`}
+							href={`/read/${cleanLastChapterHref}?detailHref=${detailHref}&source=${currentSource}`}
 							class="group hover:aria-2 flex items-center justify-center gap-2 rounded-md bg-red-500 p-2 hover:border-2 hover:border-red-500 hover:bg-transparent md:w-[15rem]"
 						>
 							<Book class="h-5 w-5 text-black group-hover:text-white" />
@@ -168,7 +166,7 @@
 					{@const isRead = readChapters.has(item.href.slice(1, -1))}
 
 					<a
-						href={`/read/${cleanHref}?detailHref=${detailHref}`}
+						href={`/read/${cleanHref}?detailHref=${detailHref}&source=${currentSource}`}
 						class="hover:aria-2 flex cursor-pointer items-center gap-2 rounded-md border-2 bg-third p-2 hover:border-2 hover:border-primary"
 						class:border-green-500={isRead}
 						class:border-transparent={!isRead}

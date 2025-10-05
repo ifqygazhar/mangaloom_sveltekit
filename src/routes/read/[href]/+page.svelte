@@ -18,6 +18,7 @@
 
 	let { data } = $props();
 	const { comicRead, chapterList, detailHref, currentChapterHref } = $derived(data);
+	let currentSource = $derived($sourceStore);
 
 	let mode = $state<'scroll' | 'swipe'>('scroll');
 	let isFullscreen = $state(false);
@@ -26,10 +27,10 @@
 	const comicPages = $derived(comicRead?.panel ?? ['']);
 	const title = $derived(comicRead?.title ?? 'Judul Komik');
 	const prev = $derived(
-		`${comicRead?.prev.slice(1, -1) !== '' ? `${comicRead?.prev.slice(1, -1) ?? '#'}?detailHref=${detailHref}` : '#'}`
+		`${comicRead?.prev.slice(1, -1) !== '' ? `${comicRead?.prev.slice(1, -1) ?? '#'}?detailHref=${detailHref}&source=${currentSource}` : '#'}`
 	);
 	const next = $derived(
-		`${comicRead?.next.slice(1, -1) !== '' ? `${comicRead?.next.slice(1, -1) ?? '#'}?detailHref=${detailHref}` : '#'}`
+		`${comicRead?.next.slice(1, -1) !== '' ? `${comicRead?.next.slice(1, -1) ?? '#'}?detailHref=${detailHref}&source=${currentSource}` : '#'}`
 	);
 
 	function switchToSwipeMode() {
@@ -98,10 +99,6 @@
 			document.removeEventListener('fullscreenchange', handleFullscreenChange);
 		};
 	});
-
-	let currentSource = $state(get(sourceStore));
-	const unsub = sourceStore.subscribe((v) => (currentSource = v));
-	onDestroy(() => unsub());
 </script>
 
 {#if data.error}

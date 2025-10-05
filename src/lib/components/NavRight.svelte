@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
 	import Bookmark from '@lucide/svelte/icons/bookmark';
 	import History from '@lucide/svelte/icons/history';
 	import Search from '@lucide/svelte/icons/search';
@@ -14,16 +13,15 @@
 
 	let searchQuery = $state('');
 
-	let { isOpen = false, selected = SourceType.V3 } = $props<{
+	let { isOpen = false } = $props<{
 		isOpen?: boolean;
-		selected?: SourceType;
 	}>();
+
+	let selected = $derived($sourceStore);
+
 	let isDetail = $derived(
 		page.url.pathname.startsWith('/detail/') || page.url.pathname.startsWith('/read/')
 	);
-
-	const unsubscribe = sourceStore.subscribe((v) => (selected = v));
-	onDestroy(() => unsubscribe());
 
 	function handleSearch(e: SubmitEvent) {
 		e.preventDefault();
@@ -33,15 +31,19 @@
 		goto(searchUrl);
 	}
 
-	function onSourceChange() {
-		sourceStore.set(selected);
+	function onSourceChange(e: Event) {
+		const target = e.target as HTMLSelectElement;
+		const newSource = target.value as SourceType;
 
-		if (selected === SourceType.V2) {
-			selected = SourceType.V3;
+		sourceStore.set(newSource);
+
+		if (newSource === SourceType.V2) {
+			sourceStore.set(SourceType.V3);
+			return;
 		}
 
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('source', selected);
+		newUrl.searchParams.set('source', newSource);
 
 		invalidate('app:source').then(() => {
 			goto(newUrl.toString(), {
@@ -142,7 +144,7 @@
 			{#if !isDetail}
 				<select
 					id="source-select"
-					bind:value={selected}
+					value={selected}
 					onchange={onSourceChange}
 					class="w-full rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-white focus:ring-2 focus:ring-primary focus:outline-none lg:w-auto lg:py-1"
 					aria-label="Pilih sumber"
@@ -154,7 +156,7 @@
 			{:else}
 				<select
 					id="source-select"
-					bind:value={selected}
+					value={selected}
 					class="w-full cursor-not-allowed rounded-md border border-gray-600 bg-third px-2 py-2 text-sm text-grey lg:w-auto lg:py-1"
 					aria-label="Sumber (read-only)"
 					disabled
