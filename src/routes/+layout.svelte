@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import '@fontsource-variable/dm-sans';
 
 	import NavLeft from '$lib/components/NavLeft.svelte';
@@ -88,7 +87,12 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="manifest" href="/site.webmanifest" />
+	<meta name="apple-mobile-web-app-title" content="Mangaloom" />
 	<!-- Primary SEO -->
 	<title>Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis</title>
 	<meta
@@ -110,8 +114,8 @@
 		property="og:description"
 		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap, update cepat, dan pengalaman membaca yang nyaman."
 	/>
-	<meta property="og:image" content="og-image.png" />
-	<meta property="og:url" content="" />
+	<meta property="og:image" content="/og-image.png" />
+	<meta property="og:url" content="https://mangaloom.app" />
 	<meta property="og:site_name" content="Mangaloom" />
 
 	<!-- Twitter -->
@@ -122,11 +126,7 @@
 		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap dan update harian."
 	/>
 	<meta name="twitter:image" content="/og-image.png" />
-
-	<!-- Canonical (gunakan baseUrl yang disediakan oleh data) -->
-	<!-- {#if data?.baseUrl}
-		<link rel="canonical" href={data.baseUrl} />
-	{/if} -->
+	<link rel="canonical" href="https://mangaloom.app" />
 </svelte:head>
 
 <header class="sticky top-0 z-50 flex w-full items-center justify-between bg-secondary px-4 py-2">
