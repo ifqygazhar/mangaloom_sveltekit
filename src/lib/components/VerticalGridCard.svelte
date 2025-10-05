@@ -84,6 +84,7 @@
 			? `${resolve('/detail/[href]', { href: cleanHref })}?source=${item.sourceType}`
 			: `${resolve('/detail/[href]', { href: cleanHref })}?source=${currentSource}`}
 		class="block"
+		onclick={handleNavigate}
 	>
 		<div class="relative overflow-hidden bg-gray-900">
 			<!-- Gambar dengan aspect ratio konsisten -->
