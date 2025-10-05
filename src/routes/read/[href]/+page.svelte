@@ -55,12 +55,15 @@
 
 	function titleToSlug(title: string): string {
 		if (!title) return '';
-		return title
-			.toLowerCase()
-			.replace(/\s+/g, '-')
-			.replace(/[^\w-]+/g, '');
+		return (
+			title
+				.toLowerCase()
+				// Ganti spasi dengan tanda hubung
+				.replace(/\s+/g, '-')
+				// Hapus semua karakter yang BUKAN huruf, angka, tanda hubung, atau titik
+				.replace(/[^\w.-]+/g, '')
+		);
 	}
-
 	$effect(() => {
 		// Pastikan semua data yang dibutuhkan sudah ada
 		if (!comicRead || !detailHref || !chapterList || chapterList.length === 0) {

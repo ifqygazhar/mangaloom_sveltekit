@@ -162,6 +162,23 @@ export async function getHistoryForKomik(
 	}));
 }
 
+export async function getAllHistory(): Promise<ChapterHistory[]> {
+	const db = await getDB();
+	const dbRecords: ChapterHistoryInDB[] = await db.getAll(HISTORY_STORE);
+	const historyItems = dbRecords.map((record) => ({
+		...record,
+		sourceType: numberToSourceType(record.sourceType)
+	}));
+
+	return historyItems.sort((a, b) => b.readAt.getTime() - a.readAt.getTime());
+}
+
+export async function deleteHistory(href: string, sourceType: SourceType) {
+	const db = await getDB();
+	const sourceNumber = sourceTypeToNumber(sourceType);
+	return db.delete(HISTORY_STORE, [href, sourceNumber]);
+}
+
 // == SCROLL POSITION ==
 export async function saveScrollPosition(scrollPos: ChapterScrollPosition) {
 	const db = await getDB();
