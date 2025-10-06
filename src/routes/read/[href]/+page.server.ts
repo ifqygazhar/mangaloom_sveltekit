@@ -16,9 +16,17 @@ type LoadOutput = {
 	currentChapterHref: string;
 };
 
+function normalizePath(path: string | null): string {
+	if (!path) return '';
+	// Trim whitespace
+	path = path.trim();
+	// Pastikan dimulai dengan /
+	return path.startsWith('/') ? path : `/${path}`;
+}
+
 export async function load({ fetch, url, params }): Promise<LoadOutput> {
 	const currentChapterHref = `/${params.href}`;
-	const detailHref = `/${url.searchParams.get('detailHref')}`;
+	const detailHref = normalizePath(url.searchParams.get('detailHref'));
 
 	if (!detailHref) {
 		return {
