@@ -1,4 +1,4 @@
-<main class="mx-auto max-w-4xl px-4 py-8 text-gray-300">
+<article class="mx-auto max-w-4xl overflow-x-hidden px-4 py-8 text-gray-300">
 	<div class="space-y-6">
 		<h1 class="text-4xl font-bold text-white">DMCA Takedown Policy</h1>
 		<p class="text-lg text-gray-400">Digital Millennium Copyright Act ("DMCA")</p>
@@ -92,4 +92,4 @@
 			</p>
 		</div>
 	</div>
-</main>
+</article>

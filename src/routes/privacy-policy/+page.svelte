@@ -11,7 +11,7 @@
 	<meta name="robots" content="index, follow" />
 </svelte:head>
 
-<main class="mx-auto max-w-4xl px-4 py-8 text-gray-300">
+<article class="mx-auto max-w-4xl px-4 py-8 text-gray-300">
 	<div class="space-y-6">
 		<h1 class="text-4xl font-bold text-white">Privacy Policy</h1>
 		<p class="text-lg text-gray-400">
@@ -96,4 +96,4 @@
 			</p>
 		</div>
 	</div>
-</main>
+</article>
