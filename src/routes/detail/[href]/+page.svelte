@@ -22,6 +22,7 @@
 	let isBookmarked = $state(false);
 	let readChapters = $state(new Set<string>());
 	let searchQuery = $state('');
+	const chapters = $derived(comicDetail?.chapter ?? []);
 	const filteredChapters = $derived(
 		chapters.filter((chapter) => chapter.title.toLowerCase().includes(searchQuery.toLowerCase()))
 	);
@@ -41,24 +42,27 @@
 	const rating = $derived(comicDetail?.rating ?? '0');
 	const genre = $derived(comicDetail?.genre ?? []);
 	const thumbnail = $derived(comicDetail?.thumbnail ?? '');
-	const chapters = $derived(comicDetail?.chapter ?? []);
 	const altTitle = $derived(comicDetail?.altTitle ?? '');
 	const detailHref: string = data.detailHref;
+	let normalizedDetailHref = detailHref;
+
+	if (normalizedDetailHref.endsWith('/')) {
+		normalizedDetailHref = normalizedDetailHref.slice(0, -1);
+	}
+	if (!normalizedDetailHref.startsWith('/')) {
+		normalizedDetailHref = `/${normalizedDetailHref}`;
+	}
 
 	const currentSource = $derived($sourceStore);
 	const hasGenre = $derived(genre.length > 0);
 
 	onMount(async () => {
-		if (detailHref === '') return;
-
+		if (detailHref === '') {
+			return;
+		}
 		const existingBookmark = await getBookmark(detailHref, currentSource);
 		isBookmarked = !!existingBookmark;
-
-		const historyRecords = await getHistoryForKomik(detailHref, currentSource);
-		console.log(
-			'Riwayat Href dari DB:',
-			historyRecords.map((r) => r.href)
-		);
+		const historyRecords = await getHistoryForKomik(normalizedDetailHref, currentSource);
 		readChapters = new Set(historyRecords.map((record) => record.href));
 	});
 
