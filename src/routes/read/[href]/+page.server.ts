@@ -1,12 +1,11 @@
 import { URI } from '$env/static/private';
-
 import { parseComicReadFromJson, type ComicReadType } from '$lib/api/types/ComicReadType.js';
 import { parseComicDetailFromJson, type ComicDetailType } from '$lib/api/types/ComicDetailType.js';
 import { SourceType } from '$lib/config/sourceType';
 import { Endpoint } from '$lib/utils/endpoint';
 import { header } from '$lib/utils/header';
-
 import { error as svelteKitError } from '@sveltejs/kit';
+import { chapterStore } from '$lib/stores/chapterlistStore';
 
 type LoadOutput = {
 	error: string | undefined;
@@ -18,9 +17,7 @@ type LoadOutput = {
 
 function normalizePath(path: string | null): string {
 	if (!path) return '';
-	// Trim whitespace
 	path = path.trim();
-	// Pastikan dimulai dengan /
 	return path.startsWith('/') ? path : `/${path}`;
 }
 
@@ -44,23 +41,12 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 		const endpointInstance = new Endpoint({ sourceType: source });
 		const baseUrl = URI;
 
-		const readResponsePromise = fetch(
+		// Fetch read data
+		const readResponse = await fetch(
 			`${baseUrl}${endpointInstance.readComic(currentChapterHref)}`,
-			{
-				headers: header
-			}
+			{ headers: header }
 		);
 
-		const detailResponsePromise = fetch(`${baseUrl}${endpointInstance.detailComic(detailHref)}`, {
-			headers: header
-		});
-
-		const [readResponse, detailResponse] = await Promise.all([
-			readResponsePromise,
-			detailResponsePromise
-		]);
-
-		console.log('detail uri fetch:', detailResponse.url);
 		console.log('read uri fetch:', readResponse.url);
 
 		if (!readResponse.ok) {
@@ -69,20 +55,35 @@ export async function load({ fetch, url, params }): Promise<LoadOutput> {
 				`Gagal mengambil data chapter: ${currentChapterHref}`
 			);
 		}
-		if (!detailResponse.ok) {
-			throw svelteKitError(detailResponse.status, `Gagal mengambil detail komik: ${detailHref}`);
-		}
 
 		const readJson = await readResponse.json();
-		const detailJson = await detailResponse.json();
-
 		const comicRead = parseComicReadFromJson(readJson.data);
-		const comicDetail = parseComicDetailFromJson(detailJson.data);
+
+		// Cek cache terlebih dahulu DENGAN source type
+		let chapterList = chapterStore.getChapters(detailHref, source);
+
+		// Jika tidak ada di cache, fetch dari API
+		if (!chapterList) {
+			const detailResponse = await fetch(`${baseUrl}${endpointInstance.detailComic(detailHref)}`, {
+				headers: header
+			});
+
+			if (!detailResponse.ok) {
+				throw svelteKitError(detailResponse.status, `Gagal mengambil detail komik: ${detailHref}`);
+			}
+
+			const detailJson = await detailResponse.json();
+			const comicDetail = parseComicDetailFromJson(detailJson.data);
+			chapterList = comicDetail.chapter;
+
+			// Simpan ke cache DENGAN source type
+			chapterStore.setChapters(detailHref, source, chapterList);
+		}
 
 		return {
 			error: undefined,
 			comicRead: comicRead,
-			chapterList: comicDetail.chapter,
+			chapterList: chapterList,
 			detailHref: detailHref,
 			currentChapterHref: currentChapterHref
 		};

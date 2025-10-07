@@ -15,6 +15,7 @@
 		getHistoryForKomik,
 		type BookmarkedKomik
 	} from '$lib/db/database';
+	import { chapterStore } from '$lib/stores/chapterlistStore.js';
 
 	let { data } = $props();
 	const { comicDetail } = $derived(data);
@@ -59,6 +60,9 @@
 	onMount(async () => {
 		if (detailHref === '') {
 			return;
+		}
+		if (comicDetail?.chapter && chapters.length > 0) {
+			chapterStore.setChapters(normalizedDetailHref, currentSource, comicDetail.chapter);
 		}
 		const existingBookmark = await getBookmark(detailHref, currentSource);
 		isBookmarked = !!existingBookmark;

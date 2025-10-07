@@ -1,4 +1,17 @@
 import { writable } from 'svelte/store';
 import { SourceType } from '$lib/config/sourceType';
+import { chapterStore } from './chapterlistStore';
 
-export const sourceStore = writable<SourceType>(SourceType.V5);
+function createSourceStore() {
+	const { subscribe, set } = writable<SourceType>(SourceType.V5);
+
+	return {
+		subscribe,
+		set: (newSource: SourceType) => {
+			chapterStore.clear();
+			set(newSource);
+		}
+	};
+}
+
+export const sourceStore = createSourceStore();
