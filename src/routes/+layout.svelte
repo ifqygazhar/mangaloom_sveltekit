@@ -10,6 +10,8 @@
 	import { SourceType } from '$lib/config/sourceType';
 	import { sourceStore } from '$lib/stores/sourceStore';
 	import { page } from '$app/state';
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 
 	let { children } = $props();
 	const year: number = new Date().getFullYear();
@@ -86,6 +88,8 @@
 	});
 </script>
 
+<Seo metatag={layoutMetadata()} />
+
 <svelte:head>
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -93,40 +97,8 @@
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="manifest" href="/site.webmanifest" />
 	<meta name="apple-mobile-web-app-title" content="Mangaloom" />
-	<!-- Primary SEO -->
-	<title>Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis</title>
-	<meta
-		name="description"
-		content="Mangaloom — baca komik manga, manhwa, dan manhua secara gratis. Temukan ratusan judul terbaru dan klasik, update harian, dan antarmuka yang ringan untuk pengalaman membaca terbaik."
-	/>
-	<meta
-		name="keywords"
-		content="Mangaloom, baca komik, manga, manhwa, manhua, komik gratis, baca manga online"
-	/>
-	<meta name="robots" content="index, follow" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="theme-color" content="#000000" />
-
-	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis" />
-	<meta
-		property="og:description"
-		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap, update cepat, dan pengalaman membaca yang nyaman."
-	/>
-	<meta property="og:image" content="/og-image.png" />
-	<meta property="og:url" content="https://mangaloom.app" />
-	<meta property="og:site_name" content="Mangaloom" />
-
-	<!-- Twitter -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Mangaloom — Baca Komik Manga, Manhwa & Manhua Gratis" />
-	<meta
-		name="twitter:description"
-		content="Baca komik manga, manhwa, dan manhua secara gratis di Mangaloom. Koleksi lengkap dan update harian."
-	/>
-	<meta name="twitter:image" content="/og-image.png" />
-	<link rel="canonical" href="https://mangaloom.app" />
 </svelte:head>
 
 <header class="sticky top-0 z-50 flex w-full items-center justify-between bg-secondary px-4 py-2">

@@ -6,6 +6,8 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import LoadingDot from '$lib/components/LoadingDot.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 
 	type PaginationProps = {
 		form: PageProps;
@@ -17,7 +19,7 @@
 	let source = $state(data.source);
 	let hasMore = $state(data.hasMore);
 	let loading = $state(false);
-	let page = $state(1);
+	let pageNumber = $state(1);
 
 	let sentinel = $state<HTMLDivElement | undefined>();
 	let formElement = $state<HTMLFormElement | undefined>();
@@ -27,7 +29,7 @@
 			items = data.newKomik;
 			source = data.source;
 			hasMore = data.hasMore;
-			page = 1;
+			pageNumber = 1;
 		}
 	});
 
@@ -41,7 +43,7 @@
 					items = [...items, ...comics];
 				}
 				hasMore = newHasMore;
-				page++;
+				pageNumber++;
 			}
 			loading = false;
 			await update();
@@ -72,6 +74,13 @@
 	});
 </script>
 
+<Seo
+	metatag={layoutMetadata(
+		'Komik terbaru dari Mangaloom - Jelajahi koleksi lengkap komik',
+		"Let's goo ada komik baru nih dari mangaloom, buruan baca sebelum kehabisan!"
+	)}
+/>
+
 {#if data.error}
 	<ErrorDisplay message={data.error} />
 {:else}
@@ -90,7 +99,7 @@
 				use:enhance={handleSubmit}
 				class="hidden"
 			>
-				<input type="hidden" name="page" value={page + 1} />
+				<input type="hidden" name="page" value={pageNumber + 1} />
 				<input type="hidden" name="source" value={source} />
 			</form>
 

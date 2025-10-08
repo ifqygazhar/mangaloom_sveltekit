@@ -13,6 +13,8 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 
 	type PaginationProps = {
 		form: PageProps;
@@ -192,6 +194,13 @@
 		};
 	});
 </script>
+
+<Seo
+	metatag={layoutMetadata(
+		'Daftar komik di mangaloom - Jelajahi koleksi lengkap komik',
+		'Ayo cari komik di mangaloom berdasarkan genre,tipe,author kesukaan mu!'
+	)}
+/>
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

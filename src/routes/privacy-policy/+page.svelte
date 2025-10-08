@@ -1,15 +1,16 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
+
 	const effectiveDate = 'October 5, 2025';
 </script>
 
-<svelte:head>
-	<title>Privacy Policy — Mangaloom</title>
-	<meta
-		name="description"
-		content="Official Privacy Policy for Mangaloom. Understand what data we collect and how we use it."
-	/>
-	<meta name="robots" content="index, follow" />
-</svelte:head>
+<Seo
+	metatag={layoutMetadata(
+		'Privacy Policy — Mangaloom',
+		'Official Privacy Policy for Mangaloom. Understand what data we collect and how we use it.'
+	)}
+/>
 
 <article class="mx-auto max-w-4xl px-4 py-8 text-gray-300">
 	<div class="space-y-6">

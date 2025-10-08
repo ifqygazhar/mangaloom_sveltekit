@@ -8,6 +8,7 @@
 	import { resolve } from '$app/paths';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import BtnBookmark from '$lib/components/BtnBookmark.svelte';
+	import { page } from '$app/state';
 	import {
 		addOrUpdateBookmark,
 		deleteBookmark,
@@ -16,6 +17,7 @@
 		type BookmarkedKomik
 	} from '$lib/db/database';
 	import { chapterStore } from '$lib/stores/chapterlistStore.js';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 	const { comicDetail } = $derived(data);
@@ -57,6 +59,85 @@
 	const currentSource = $derived($sourceStore);
 	const hasGenre = $derived(genre.length > 0);
 
+	const pageMetadata = $derived({
+		title: `${title} - Baca Online di Mangaloom`,
+		description:
+			description.length > 160
+				? description.slice(0, 157) + '...'
+				: description || `Baca ${title} di Mangaloom. ${type} karya ${author}.`,
+		keywords: [
+			title,
+			...(altTitle ? [altTitle] : []),
+			type,
+			author,
+			'baca online',
+			'manga',
+			'manhwa',
+			'manhua',
+			'Mangaloom',
+			...genre.map((g) => g.title)
+		],
+		author: 'Team Mangaloom',
+		follow: true,
+		language: 'id',
+		canonical: page.url.href,
+		og: {
+			siteName: 'Mangaloom',
+			type: 'article',
+			image: [
+				{
+					url: thumbnail || '/og-image.png',
+					alt: title,
+					type: 'image/jpeg',
+					width: '1200',
+					height: '630'
+				}
+			]
+		},
+		x: {
+			card: 'summary_large_image',
+			site: '@mangaloom',
+			image: [
+				{
+					url: thumbnail || '/og-image.png',
+					alt: title
+				}
+			]
+		},
+		custom: [
+			{
+				property: 'article:author',
+				content: author
+			},
+			{
+				property: 'article:published_time',
+				content: released
+			},
+			{
+				name: 'rating',
+				content: rating
+			}
+		],
+		ldJson: {
+			'@context': 'https://schema.org',
+			'@type': 'Book',
+			name: title,
+			author: {
+				'@type': 'Person',
+				name: author
+			},
+			image: thumbnail,
+			description: description,
+			genre: genre.map((g) => g.title).join(', '),
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: rating,
+				bestRating: '10'
+			},
+			bookFormat: 'https://schema.org/GraphicNovel'
+		}
+	});
+
 	onMount(async () => {
 		if (detailHref === '') {
 			return;
@@ -95,6 +176,10 @@
 		isBookmarked = !isBookmarked;
 	}
 </script>
+
+{#if comicDetail && !data.error}
+	<Seo metatag={pageMetadata} />
+{/if}
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

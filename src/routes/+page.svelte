@@ -13,6 +13,8 @@
 	import type { PageData } from './$types';
 
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
+	import Seo from '$lib/components/Seo.svelte';
 
 	export let data: PageData;
 
@@ -23,6 +25,8 @@
 	$: comedy = data.comedy;
 	$: echi = data.echi;
 </script>
+
+<Seo metatag={layoutMetadata()} />
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

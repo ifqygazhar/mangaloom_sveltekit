@@ -2,9 +2,18 @@
 	import type { PageData } from './$types';
 	import GeneralVerticalComic from '$lib/components/GeneralVerticalComic.svelte';
 	import Search from '@lucide/svelte/icons/search';
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 
 	let { data } = $props<{ data: PageData }>();
 </script>
+
+<Seo
+	metatag={layoutMetadata(
+		`Search: ${data.query} - Mangaloom`,
+		`Hasil pencarian untuk "${data.query}" di Mangaloom. Temukan berbagai komik menarik sesuai dengan kata kunci pencarian Anda.`
+	)}
+/>
 
 {#if data.comics.length == 0}
 	<div

@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	import { getGenreEmoji } from '$lib/utils/getEmojiGenre';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	$: genres = data.genres;
 </script>
+
+<Seo metatag={layoutMetadata('Genres — Mangaloom', 'Daftar List Genre di Mangaloom')} />
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

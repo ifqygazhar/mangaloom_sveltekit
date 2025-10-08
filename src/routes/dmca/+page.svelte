@@ -1,3 +1,10 @@
+<script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
+</script>
+
+<Seo metatag={layoutMetadata('DMCA — Mangaloom', 'Official DMCA Takedown Policy of Mangaloom')} />
+
 <article class="mx-auto max-w-4xl overflow-x-hidden px-4 py-8 text-gray-300">
 	<div class="space-y-6 overflow-x-hidden">
 		<h1 class="text-4xl font-bold break-words text-white">DMCA Takedown Policy</h1>

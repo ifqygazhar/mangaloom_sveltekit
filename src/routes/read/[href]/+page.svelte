@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	// Hapus impor ikon yang sudah dipindah ke ReaderControls
 	import Shrink from '@lucide/svelte/icons/shrink';
 	import {
@@ -14,6 +14,8 @@
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
 	import { sourceStore } from '$lib/stores/sourceStore.js';
 	import { addOrUpdateHistory, type ChapterHistory } from '$lib/db/database';
+	import { layoutMetadata } from '$lib/utils/metatagHelper.js';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 	const { comicRead, chapterList, detailHref, currentChapterHref } = $derived(data);
@@ -102,6 +104,10 @@
 		};
 	});
 </script>
+
+{#if data.comicRead && !data.error}
+	<Seo metatag={layoutMetadata(`${title} — Mangaloom`, `Nikmatin chapter ${title} - Mangaloom`)} />
+{/if}
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

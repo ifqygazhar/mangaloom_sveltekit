@@ -5,6 +5,8 @@
 	import { enhance } from '$app/forms';
 	import LoadingDot from '$lib/components/LoadingDot.svelte';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
 
 	type PaginationProps = {
 		form: PageProps;
@@ -70,6 +72,10 @@
 		};
 	});
 </script>
+
+{#if data.genreKomik && !data.error}
+	<Seo metatag={layoutMetadata(`${data.genre} — Mangaloom`, `Nikmatin genre ${data.genre}`)} />
+{/if}
 
 {#if data.error}
 	<ErrorDisplay message={data.error} />

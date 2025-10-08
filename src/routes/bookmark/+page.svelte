@@ -4,6 +4,8 @@
 	import { deleteBookmark, getAllBookmarks, type BookmarkedKomik } from '$lib/db/database';
 	import type { SourceType } from '$lib/config/sourceType';
 	import ErrorDisplay from '$lib/components/ErrorDisplay.svelte';
+	import { layoutMetadata } from '$lib/utils/metatagHelper';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let bookmarks = $state<BookmarkedKomik[]>([]);
 	let searchQuery = $state('');
@@ -29,6 +31,13 @@
 		}
 	}
 </script>
+
+<Seo
+	metatag={layoutMetadata(
+		'Bookmark komik kamu - Mangaloom',
+		'Bookmark simpanan komik kamu - Mangaloom'
+	)}
+/>
 
 {#if bookmarks.length > 0}
 	<div class="flex flex-col md:h-[calc(100vh-10rem)]">
