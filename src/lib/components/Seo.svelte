@@ -2,19 +2,18 @@
 	import { page } from '$app/state';
 
 	const { metatag }: Metatag = $props();
-	let {
-		title,
-		description,
-		keywords = [],
-		author,
-		canonical,
-		follow = true,
-		language = 'en',
-		og,
-		x,
-		ldJson = {},
-		custom
-	} = metatag;
+
+	const title = $derived(metatag.title);
+	const description = $derived(metatag.description);
+	const keywords = $derived(metatag.keywords ?? []);
+	const author = $derived(metatag.author);
+	const canonical = $derived(metatag.canonical);
+	const follow = $derived(metatag.follow ?? true);
+	const language = $derived(metatag.language ?? 'en');
+	const og = $derived(metatag.og);
+	const x = $derived(metatag.x);
+	const ldJson = $derived(metatag.ldJson ?? {});
+	const custom = $derived(metatag.custom);
 
 	const getLdJson = () => JSON.stringify(ldJson);
 </script>
