@@ -74,10 +74,10 @@
 
 	const sourceOptions = [
 		{ value: SourceType.V1, label: 'General (v1)', disabled: false },
-		{ value: SourceType.V2, label: 'Maintenance (v2)', disabled: false },
+		{ value: SourceType.V2, label: 'General (v2)', disabled: false },
 		{ value: SourceType.V3, label: 'Stabil (v3)', disabled: false },
 		{ value: SourceType.V4, label: 'Dark (v4)', disabled: false },
-		{ value: SourceType.V5, label: 'Manhwa (v5)', disabled: true }
+		{ value: SourceType.V5, label: 'Maintenance (v5)', disabled: true }
 	];
 
 	function clickOutside(node: HTMLElement) {
