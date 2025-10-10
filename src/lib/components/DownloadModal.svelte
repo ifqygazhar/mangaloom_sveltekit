@@ -11,8 +11,8 @@
 
 	const apkUrl =
 		'https://github.com/Mangaloom/mangaloom_public/releases/download/v2.3.0/mangaloom-v2.3.0-universal.apk';
-	const playStoreComingSoon = true; // Set false jika sudah tersedia
-	const playStoreUrl = 'https://play.google.com/store/apps/details?id=id.mangaloom.app';
+	const playStoreComingSoon = false; // Set false jika sudah tersedia
+	const playStoreUrl = 'https://play.google.com/store/apps/details?id=id.mangaloom.app&hl=id';
 
 	// Function untuk menutup modal
 	function closeModal() {
