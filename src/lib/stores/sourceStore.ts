@@ -3,7 +3,7 @@ import { SourceType } from '$lib/config/sourceType';
 import { chapterStore } from './chapterlistStore';
 
 function createSourceStore() {
-	const { subscribe, set } = writable<SourceType>(SourceType.V5);
+	const { subscribe, set } = writable<SourceType>(SourceType.V3);
 
 	return {
 		subscribe,

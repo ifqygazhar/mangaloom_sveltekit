@@ -42,11 +42,11 @@
 			return;
 		}
 
-		// Block V2 (maintenance)
-		if (newSource === SourceType.V2) {
+		// Block V5 (maintenance)
+		if (newSource === SourceType.V5) {
 			// Reset kembali ke source sebelumnya
 			target.value = selected;
-			alert('Source V2 sedang dalam maintenance. Silakan pilih source lain.');
+			alert('Source V5 sedang dalam maintenance. Silakan pilih source lain.');
 			return;
 		}
 
@@ -74,10 +74,10 @@
 
 	const sourceOptions = [
 		{ value: SourceType.V1, label: 'General (v1)', disabled: false },
-		{ value: SourceType.V2, label: 'Maintenance (v2)', disabled: true },
+		{ value: SourceType.V2, label: 'Maintenance (v2)', disabled: false },
 		{ value: SourceType.V3, label: 'Stabil (v3)', disabled: false },
 		{ value: SourceType.V4, label: 'Dark (v4)', disabled: false },
-		{ value: SourceType.V5, label: 'Manhwa (v5)', disabled: false }
+		{ value: SourceType.V5, label: 'Manhwa (v5)', disabled: true }
 	];
 
 	function clickOutside(node: HTMLElement) {
