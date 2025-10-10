@@ -7,7 +7,7 @@ import { safeJsonParse } from '$lib/utils/safeJsonParse';
 
 export async function load({ fetch, url }) {
 	try {
-		const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
+		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;

@@ -9,7 +9,7 @@ export async function load({ fetch, url }) {
 	console.log(`Source: ${url.searchParams.get('source')}`);
 
 	try {
-		const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
+		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;

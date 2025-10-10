@@ -9,7 +9,7 @@ import type { Actions } from '@sveltejs/kit';
 export async function load({ fetch, url, params }) {
 	try {
 		const genre = params.href;
-		const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
+		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const endpointInstance = new Endpoint({ sourceType: source });
 
 		const baseUrl = URI;

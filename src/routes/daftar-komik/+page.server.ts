@@ -8,7 +8,7 @@ import { json, type Actions } from '@sveltejs/kit';
 
 export async function load({ fetch, url }) {
 	try {
-		const source = (url.searchParams.get('source') as SourceType) || SourceType.V5;
+		const source = (url.searchParams.get('source') as SourceType) || SourceType.V3;
 		const page = parseInt(url.searchParams.get('page') || '1', 10); // FIXED: Changed from 1 to 10
 		const genre = url.searchParams.get('genre') || '';
 		const status = url.searchParams.get('status') || '';
