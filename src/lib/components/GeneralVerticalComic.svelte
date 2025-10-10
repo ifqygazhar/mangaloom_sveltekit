@@ -16,7 +16,7 @@
 	}>();
 </script>
 
-<article class="mb-2 flex w-screen flex-col">
+<div class="mb-2 flex w-screen flex-col">
 	<h2 class="pt-4 pl-4 text-[1.2rem] font-bold text-white sm:text-[1.3rem] lg:text-2xl md:text-2xl">
 		{title}
 	</h2>
@@ -31,4 +31,4 @@
 			{/each}
 		</div>
 	</div>
-</article>
+</div>
