@@ -138,6 +138,7 @@
 							<LazyImage
 								src={item}
 								alt={`${title} - ${item}`}
+								useSharp={false}
 								class={`w-full max-w-full ${isFullscreen ? 'object-contain' : 'object-cover'}`}
 							/>
 						</div>
